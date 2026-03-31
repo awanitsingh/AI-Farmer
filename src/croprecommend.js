@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import bg2 from "./img/bg1.jpg";
 import { saveHistory } from "./utils/saveHistory";
+import { predictCrop } from "./utils/cropPredictor";
 
 const inputFields = [
   { name: "Nitrogen", label: "Nitrogen (N)", placeholder: "e.g. 90", step: "1", icon: "🧪" },
@@ -89,14 +90,25 @@ function Croprecommend({ darkMode, user }) {
 
   const handleSubmit = async (formValues) => {
     try {
-      const res = await fetch("https://karthikcropapi.onrender.com/predict", {
+      // Use local predictor instantly, then try API in background for accuracy
+      const localResult = predictCrop({
+        N: +formValues.N, P: +formValues.P, K: +formValues.K,
+        temperature: +formValues.temperature,
+        humidity: +formValues.humidity,
+        ph: +formValues.ph,
+        rainfall: +formValues.rainfall,
+      });
+      setResult(localResult);
+      if (user) await saveHistory(user.uid, "crop", formValues, localResult);
+
+      // Try API in background to update with ML result
+      fetch("https://karthikcropapi.onrender.com/predict", {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(formValues),
-      });
-      const data = await res.json();
-      setResult(data.result);
-      if (user) await saveHistory(user.uid, "crop", formValues, data.result);
+      }).then((res) => res.json()).then((data) => {
+        if (data.result) setResult(data.result);
+      }).catch(() => {}); // silently fail if API is sleeping
     } catch (err) {
       console.error("Error:", err);
     }

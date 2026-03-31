@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import bg2 from "./img/bg1.jpg";
 import { saveHistory } from "./utils/saveHistory";
+import { predictFertilizer } from "./utils/fertilizerPredictor";
 
 const soilTypes = ["Loamy", "Sandy", "Clayey", "Black", "Red"];
 const cropTypes = ["Sugarcane", "Cotton", "Millets", "Paddy", "Pulses", "Wheat", "Tobacco", "Barley", "Oil seeds", "Ground Nuts", "Maize"];
@@ -107,14 +108,19 @@ function Fertilizer({ darkMode, user }) {
 
   const handleSubmit = async (formValues) => {
     try {
-      const res = await fetch("https://karthikfertapi.onrender.com/predict", {
+      // Instant local prediction
+      const localResult = predictFertilizer(formValues);
+      setResult(localResult);
+      if (user) await saveHistory(user.uid, "fertilizer", formValues, localResult);
+
+      // Try API in background
+      fetch("https://karthikfertapi.onrender.com/predict", {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(formValues),
-      });
-      const data = await res.json();
-      setResult(data.result);
-      if (user) await saveHistory(user.uid, "fertilizer", formValues, data.result);
+      }).then((res) => res.json()).then((data) => {
+        if (data.result) setResult(data.result);
+      }).catch(() => {});
     } catch (err) {
       console.error("Error:", err);
     }
