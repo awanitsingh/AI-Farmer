@@ -20,6 +20,7 @@ import SoilHealth from "./pages/SoilHealth";
 import CropCalendar from "./pages/CropCalendar";
 import Settings from "./pages/Settings";
 import MarketPage from "./pages/MarketPage";
+import FuturePredictions from "./pages/FuturePredictions";
 import { Analytics } from "@vercel/analytics/react";
 
 export const DarkModeContext = React.createContext();
@@ -96,6 +97,7 @@ function App() {
               <Route path="/calendar" element={user ? <CropCalendar darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
               <Route path="/settings" element={user ? <Settings darkMode={darkMode} setDarkMode={setDarkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
               <Route path="/market" element={user ? <MarketPage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/future" element={user ? <FuturePredictions darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
             </Routes>
           </main>
           {user && (

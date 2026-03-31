@@ -19,6 +19,7 @@ const navItems = [
     children: [
       { label: "Soil Health", path: "/soil", icon: "🧮" },
       { label: "Crop Calendar", path: "/calendar", icon: "📅" },
+      { label: "Future Predictions", path: "/future", icon: "🔮" },
     ],
   },
   { label: "History", path: "/history", icon: "📊" },
