@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { saveHistory } from "./utils/saveHistory";
 
 const DISEASE_API = "http://127.0.0.1:8002"; // replace with your deployed URL
 
@@ -8,7 +9,7 @@ const severityConfig = {
   high:   { color: "text-red-600",    bg: "bg-red-100",    dark: "text-red-400",    darkBg: "bg-red-900/40",    label: "Severe",   icon: "🚨" },
 };
 
-function Plantdis({ darkMode }) {
+function Plantdis({ darkMode, user }) {
   const [image, setImage]       = useState(null);
   const [preview, setPreview]   = useState(null);
   const [result, setResult]     = useState(null);
@@ -48,6 +49,7 @@ function Plantdis({ darkMode }) {
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const data = await res.json();
       setResult(data);
+      if (user) await saveHistory(user.uid, "disease", { filename: image.name }, data.result || data.display);
     } catch (err) {
       setError("Failed to connect to the disease detection API. Make sure the API is running.");
       console.error(err);
