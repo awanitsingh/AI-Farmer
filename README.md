@@ -2,7 +2,7 @@
 
 An AI-powered integrated crop advisory system built with React and Firebase. Helps farmers make smarter decisions using machine learning for crop recommendations, fertilizer suggestions, and plant disease detection.
 
-🔗 **Live Demo:** [ai-based-integrated-crop-advisory-s.vercel.app](https://ai-based-integrated-crop-advisory-s.vercel.app/)
+🔗 **Live Demo:** [ai-based-integrated-crop-advisory-s.vercel.app](https://ai-based-integrated-crop-advisory-s-zeta.vercel.app/)
 
 ---
 
