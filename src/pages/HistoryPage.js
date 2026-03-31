@@ -29,23 +29,6 @@ export default function HistoryPage({ darkMode, user }) {
     }).catch(console.error).finally(() => setLoading(false));
   }, [user]);
 
-  const fetchHistory = async () => {
-    if (!user) return;
-    setLoading(true);
-    try {
-      const q = query(
-        collection(db, "history"),
-        where("userId", "==", user.uid),
-        orderBy("createdAt", "desc")
-      );
-      const snap = await getDocs(q);
-      setHistory(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "history", id));
     setHistory((prev) => prev.filter((h) => h.id !== id));
