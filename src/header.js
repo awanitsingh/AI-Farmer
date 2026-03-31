@@ -1,7 +1,13 @@
 import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
 
 function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const displayName = user?.displayName || user?.email?.split("@")[0] || "User";
+  const initials = displayName.slice(0, 2).toUpperCase();
+
   return (
     <header className={`sticky top-0 z-50 py-4 backdrop-blur-md border-b ${
       darkMode
@@ -32,7 +38,7 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
             <button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="nav-link text-sm cursor-pointer bg-transparent border-none">Contact</button>
           </div>
 
-          {/* Dark Mode Toggle + Auth */}
+          {/* Dark Mode Toggle + User */}
           <div className="flex items-center gap-3">
             <span className="text-sm hidden sm:block">{darkMode ? "🌙" : "☀️"}</span>
             <button
@@ -40,23 +46,52 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
               onClick={() => setDarkMode(!darkMode)}
               aria-label="Toggle dark mode"
             />
-            {user ? (
-              <div className="flex items-center gap-2">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-                  darkMode ? "bg-green-800 text-green-300" : "bg-green-100 text-green-700"
-                }`}>
-                  {user.name?.charAt(0).toUpperCase()}
-                </div>
-                <button onClick={onSignOut} className={`text-xs font-medium hidden sm:block ${
-                  darkMode ? "text-gray-400 hover:text-red-400" : "text-gray-500 hover:text-red-500"
-                }`}>
-                  Sign Out
+
+            {user && (
+              <div className="relative">
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className={`flex items-center gap-2 px-2 py-1 rounded-xl transition-all ${
+                    darkMode ? "hover:bg-gray-700" : "hover:bg-green-50"
+                  }`}
+                >
+                  {/* Avatar circle */}
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold shadow-md bg-gradient-to-br from-green-400 to-emerald-600 text-white`}>
+                    {initials}
+                  </div>
+                  {/* Name */}
+                  <span className={`text-sm font-medium hidden sm:block max-w-[100px] truncate ${
+                    darkMode ? "text-green-300" : "text-green-700"
+                  }`}>
+                    {displayName}
+                  </span>
+                  <span className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-400"}`}>▾</span>
                 </button>
+
+                {/* Dropdown */}
+                {dropdownOpen && (
+                  <div className={`absolute right-0 mt-2 w-48 rounded-2xl shadow-xl border py-2 z-50 ${
+                    darkMode ? "bg-gray-800 border-green-900" : "bg-white border-green-100"
+                  }`}>
+                    <div className={`px-4 py-2 border-b ${darkMode ? "border-green-900" : "border-green-50"}`}>
+                      <p className={`text-xs font-semibold truncate ${darkMode ? "text-green-300" : "text-green-700"}`}>
+                        {displayName}
+                      </p>
+                      <p className={`text-xs truncate ${darkMode ? "text-gray-400" : "text-gray-400"}`}>
+                        {user.email}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => { setDropdownOpen(false); onSignOut(); }}
+                      className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 transition-colors ${
+                        darkMode ? "text-red-400 hover:bg-gray-700" : "text-red-500 hover:bg-red-50"
+                      }`}
+                    >
+                      🚪 Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
-            ) : (
-              <Link to="/signin" className="btn-eco text-xs px-4 py-2 no-underline">
-                Sign In
-              </Link>
             )}
           </div>
         </nav>
