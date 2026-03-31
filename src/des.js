@@ -1,4 +1,4 @@
-import bg from "./img/bg-2.jpg";
+const bgImage = "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=600";
 
 function Des({ darkMode }) {
   const features = [
@@ -28,7 +28,7 @@ function Des({ darkMode }) {
             <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-600 rounded-3xl transform rotate-3 opacity-20" />
             <img
               alt="Eco farming"
-              src={bg}
+              src={bgImage}
               className="relative rounded-3xl w-full object-cover shadow-2xl"
               style={{ maxHeight: "500px" }}
             />
