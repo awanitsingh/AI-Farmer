@@ -36,16 +36,28 @@ function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
-  // Listen to Firebase auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      setAuthLoading(false);
     });
     return () => unsubscribe();
   }, []);
 
   const handleSignOut = () => signOut(auth);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-green-50">
+        <div className="text-center">
+          <div className="text-5xl mb-4 animate-bounce">🌿</div>
+          <p className="text-green-700 font-medium">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
@@ -56,29 +68,35 @@ function App() {
       <Analytics />
       <BrowserRouter>
         <div className={`flex min-h-screen flex-col leaf-bg ${darkMode ? "dark" : ""}`}>
-          <Header
-            onContactClick={() => setIsContactModalOpen(true)}
-            darkMode={darkMode}
-            setDarkMode={setDarkMode}
-            user={user}
-            onSignOut={handleSignOut}
-          />
+          {user && (
+            <Header
+              onContactClick={() => setIsContactModalOpen(true)}
+              darkMode={darkMode}
+              setDarkMode={setDarkMode}
+              user={user}
+              onSignOut={handleSignOut}
+            />
+          )}
           <main className="flex-1">
             <Routes>
               <Route path="/" element={user ? <HomePage darkMode={darkMode} onContactClick={() => setIsContactModalOpen(true)} /> : <SignIn darkMode={darkMode} />} />
-              <Route path="/crop" element={<CropPage darkMode={darkMode} />} />
-              <Route path="/fertilizer" element={<FertilizerPage darkMode={darkMode} />} />
-              <Route path="/disease" element={<DiseasePage darkMode={darkMode} />} />
               <Route path="/signin" element={<SignIn darkMode={darkMode} />} />
               <Route path="/signup" element={<SignUp darkMode={darkMode} />} />
+              <Route path="/crop" element={user ? <CropPage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/fertilizer" element={user ? <FertilizerPage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/disease" element={user ? <DiseasePage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
             </Routes>
           </main>
-          <Footer onContactClick={() => setIsContactModalOpen(true)} darkMode={darkMode} />
-          <ContactModal
-            isOpen={isContactModalOpen}
-            onClose={() => setIsContactModalOpen(false)}
-            darkMode={darkMode}
-          />
+          {user && (
+            <>
+              <Footer onContactClick={() => setIsContactModalOpen(true)} darkMode={darkMode} />
+              <ContactModal
+                isOpen={isContactModalOpen}
+                onClose={() => setIsContactModalOpen(false)}
+                darkMode={darkMode}
+              />
+            </>
+          )}
         </div>
       </BrowserRouter>
     </DarkModeContext.Provider>
