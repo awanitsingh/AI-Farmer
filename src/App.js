@@ -65,7 +65,7 @@ function App() {
           />
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={<HomePage darkMode={darkMode} onContactClick={() => setIsContactModalOpen(true)} />} />
+              <Route path="/" element={user ? <HomePage darkMode={darkMode} onContactClick={() => setIsContactModalOpen(true)} /> : <SignIn darkMode={darkMode} />} />
               <Route path="/crop" element={<CropPage darkMode={darkMode} />} />
               <Route path="/fertilizer" element={<FertilizerPage darkMode={darkMode} />} />
               <Route path="/disease" element={<DiseasePage darkMode={darkMode} />} />
