@@ -67,7 +67,6 @@ function CropForm({ onSubmit, darkMode }) {
 
 function CropResult({ result, onBack, darkMode }) {
   const cropName = result?.split(" ")[0] || "farm";
-  const imageUrl = `https://api.pexels.com/v1/search?query=${cropName}`;
   
   // Use Wikimedia Commons for crop images - reliable and free
   const cropImages = {
