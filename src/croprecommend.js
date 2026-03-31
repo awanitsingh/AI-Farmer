@@ -66,19 +66,46 @@ function CropForm({ onSubmit, darkMode }) {
 }
 
 function CropResult({ result, onBack, darkMode }) {
-  // Extract crop name from result string e.g. "Rice is the best crop..."
-  const cropName = result?.split(" ")[0]?.toLowerCase() || "farm";
-  const imageUrl = `https://source.unsplash.com/400x300/?${cropName},crop,farm`;
+  const cropName = result?.split(" ")[0] || "farm";
+  const imageUrl = `https://api.pexels.com/v1/search?query=${cropName}`;
+  
+  // Use Wikimedia Commons for crop images - reliable and free
+  const cropImages = {
+    rice: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White_rice.jpg/320px-White_rice.jpg",
+    maize: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Corn_-_Zea_mays_-_geograph.org.uk_-_1400982.jpg/320px-Corn_-_Zea_mays_-_geograph.org.uk_-_1400982.jpg",
+    chickpea: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Chickpeas.jpg/320px-Chickpeas.jpg",
+    kidneybeans: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Kidney_beans.jpg/320px-Kidney_beans.jpg",
+    pigeonpeas: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Cajanus_cajan_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-168.jpg/320px-Cajanus_cajan_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-168.jpg",
+    mothbeans: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Moth_bean.jpg/320px-Moth_bean.jpg",
+    mungbean: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Mung_beans.jpg/320px-Mung_beans.jpg",
+    blackgram: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Vigna_mungo.jpg/320px-Vigna_mungo.jpg",
+    lentil: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Lentil_-_Lens_culinaris.jpg/320px-Lentil_-_Lens_culinaris.jpg",
+    pomegranate: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Pomegranate_fruit_-_whole.jpg/320px-Pomegranate_fruit_-_whole.jpg",
+    banana: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Banana-Platano.jpg/320px-Banana-Platano.jpg",
+    mango: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/320px-Hapus_Mango.jpg",
+    grapes: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Kyoho-grape.jpg/320px-Kyoho-grape.jpg",
+    watermelon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/280px-PNG_transparency_demonstration_1.png",
+    muskmelon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Muskmelon_Fruit.jpg/320px-Muskmelon_Fruit.jpg",
+    apple: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/320px-Red_Apple.jpg",
+    orange: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Oranges_and_orange_juice.jpg/320px-Oranges_and_orange_juice.jpg",
+    papaya: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-028.jpg/320px-Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-028.jpg",
+    coconut: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Coconut_on_white_background.jpg/320px-Coconut_on_white_background.jpg",
+    cotton: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cotton_field_kv07.jpg/320px-Cotton_field_kv07.jpg",
+    jute: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Jute_Field_Bangladesh.jpg/320px-Jute_Field_Bangladesh.jpg",
+    coffee: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG",
+  };
+
+  const key = cropName.toLowerCase().replace(/\s/g, "");
+  const img = cropImages[key] || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/320px-Camponotus_flavomarginatus_ant.jpg";
 
   return (
     <div className="flex flex-col md:flex-row gap-8 items-center">
       <div className="md:w-1/2">
         <img
-          src={imageUrl}
+          src={img}
           alt={cropName}
-          className="rounded-2xl w-full object-cover shadow-lg"
-          style={{ maxHeight: "340px" }}
-          onError={(e) => { e.target.src = "https://source.unsplash.com/400x300/?agriculture,field"; }}
+          className="rounded-2xl w-full object-cover shadow-lg bg-green-50"
+          style={{ maxHeight: "340px", minHeight: "200px" }}
         />
       </div>
       <div className="md:w-1/2 text-center">

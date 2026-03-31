@@ -84,19 +84,30 @@ function FertForm({ onSubmit, darkMode }) {
 }
 
 function FertResult({ result, onBack, darkMode }) {
-  // Extract fertilizer name e.g. "Urea is the best..."
-  const fertName = result?.split(" is")[0]?.toLowerCase().replace(/[()]/g, "") || "fertilizer";
-  const imageUrl = `https://source.unsplash.com/400x300/?${fertName},fertilizer,soil`;
+  const fertName = result?.split(" is")[0] || "fertilizer";
+
+  const fertImages = {
+    "urea": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Urea_ball-and-stick.png/240px-Urea_ball-and-stick.png",
+    "dap": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Fertilizer_urea_ball.jpg/320px-Fertilizer_urea_ball.jpg",
+    "mop": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Potassium-chloride-3D-ionic.png/240px-Potassium-chloride-3D-ionic.png",
+    "npk": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Fertilizer_on_field.jpg/320px-Fertilizer_on_field.jpg",
+    "ssp": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Fertilizer_urea_ball.jpg/320px-Fertilizer_urea_ball.jpg",
+    "compost": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Compost_Heap.jpg/320px-Compost_Heap.jpg",
+    "potassium": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Potassium-chloride-3D-ionic.png/240px-Potassium-chloride-3D-ionic.png",
+    "gypsum": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Gypse_Arignac.jpg/320px-Gypse_Arignac.jpg",
+  };
+
+  const key = Object.keys(fertImages).find(k => fertName.toLowerCase().includes(k)) || "npk";
+  const img = fertImages[key] || fertImages["npk"];
 
   return (
     <div className="flex flex-col md:flex-row gap-8 items-center">
       <div className="md:w-1/2">
         <img
-          src={imageUrl}
+          src={img}
           alt={fertName}
-          className="rounded-2xl w-full object-cover shadow-lg"
-          style={{ maxHeight: "340px" }}
-          onError={(e) => { e.target.src = "https://source.unsplash.com/400x300/?farming,soil,agriculture"; }}
+          className="rounded-2xl w-full object-cover shadow-lg bg-green-50"
+          style={{ maxHeight: "340px", minHeight: "200px" }}
         />
       </div>
       <div className="md:w-1/2 text-center">
