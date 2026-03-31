@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -37,24 +37,7 @@ function generatePriceForecast(crop) {
   });
 }
 
-// ── 3. Weather Forecast ───────────────────────────────────────────────────────
-function generateWeatherForecast() {
-  const conditions = ["☀️ Sunny","⛅ Partly Cloudy","🌧️ Rainy","🌤️ Clear","☁️ Cloudy","🌦️ Showers"];
-  return Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(today); d.setDate(today.getDate() + i + 1);
-    return {
-      day: i === 0 ? "Tomorrow" : d.toLocaleDateString("en", { weekday: "short" }),
-      date: d.toLocaleDateString("en", { month: "short", day: "numeric" }),
-      condition: conditions[rand(0, conditions.length - 1)],
-      high: rand(22, 38),
-      low: rand(14, 22),
-      humidity: rand(40, 90),
-      rain: rand(0, 80),
-    };
-  });
-}
-
-// ── 4. Soil Degradation Forecast ─────────────────────────────────────────────
+// ── 3. Soil Degradation Forecast ─────────────────────────────────────────────
 function predictSoilDegradation({ N, P, K, ph, moisture, crop }) {
   const months = Array.from({ length: 6 }, (_, i) => {
     const m = MONTHS[(today.getMonth() + i + 1) % 12];
@@ -120,10 +103,7 @@ export default function FuturePredictions({ darkMode }) {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({ crop: "Rice", area: 2, N: 80, P: 40, K: 40, rainfall: 150, ph: 6.5, moisture: 50 });
   const [results, setResults] = useState(null);
-  const [weather, setWeather] = useState([]);
   const [activeTab, setActiveTab] = useState("yield");
-
-  useEffect(() => { setWeather(generateWeatherForecast()); }, []);
 
   const handleChange = (e) => setInputs({ ...inputs, [e.target.name]: e.target.value });
 
@@ -145,7 +125,6 @@ export default function FuturePredictions({ darkMode }) {
   const tabs = [
     { key: "yield",    icon: "🌾", label: "Yield" },
     { key: "price",    icon: "📈", label: "Price" },
-    { key: "weather",  icon: "🌤️", label: "Weather" },
     { key: "soil",     icon: "🧪", label: "Soil" },
     { key: "planting", icon: "📅", label: "Planting" },
   ];
@@ -274,28 +253,6 @@ export default function FuturePredictions({ darkMode }) {
                           <span className={`text-xs ${p.price > results.price[0].price ? "text-green-500" : "text-red-500"}`}>
                             {p.price > results.price[0].price ? "▲" : "▼"}
                           </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Weather Tab */}
-                {activeTab === "weather" && (
-                  <div className={card}>
-                    <h3 className={`text-sm font-bold mb-4 ${darkMode ? "text-green-300" : "text-green-700"}`}>🌤️ 7-Day Weather Forecast</h3>
-                    <div className="space-y-2">
-                      {weather.map((w, i) => (
-                        <div key={i} className={`flex items-center gap-3 px-4 py-3 rounded-xl ${darkMode ? "bg-gray-700/50" : "bg-green-50"}`}>
-                          <span className="text-2xl w-8">{w.condition.split(" ")[0]}</span>
-                          <div className="flex-1">
-                            <p className={`text-sm font-semibold ${darkMode ? "text-green-200" : "text-gray-700"}`}>{w.day}</p>
-                            <p className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{w.date} · {w.condition.split(" ").slice(1).join(" ")}</p>
-                          </div>
-                          <div className="text-right">
-                            <p className={`text-sm font-bold ${darkMode ? "text-green-300" : "text-green-700"}`}>{w.high}° / {w.low}°</p>
-                            <p className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>💧 {w.rain}%</p>
-                          </div>
                         </div>
                       ))}
                     </div>
