@@ -68,6 +68,7 @@ export default function Settings({ darkMode, setDarkMode, user }) {
     { key: "weather",     label: "Weather Alerts",     desc: "Receive weather-based farming tips" },
     { key: "seasonal",    label: "Seasonal Reminders", desc: "Crop planting and harvesting reminders" },
   ];
+  const card = `eco-card p-6 mb-4 ${darkMode ? "bg-gray-800/60" : ""}`;
   const label = `block text-xs font-semibold mb-1 ${darkMode ? "text-green-300" : "text-green-800"}`;
 
   return (
