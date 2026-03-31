@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-function Header({ onContactClick, darkMode, setDarkMode }) {
+function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
   const navigate = useNavigate();
   return (
     <header className={`sticky top-0 z-50 py-4 backdrop-blur-md border-b ${
@@ -32,7 +32,7 @@ function Header({ onContactClick, darkMode, setDarkMode }) {
             <button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="nav-link text-sm cursor-pointer bg-transparent border-none">Contact</button>
           </div>
 
-          {/* Dark Mode Toggle */}
+          {/* Dark Mode Toggle + Auth */}
           <div className="flex items-center gap-3">
             <span className="text-sm hidden sm:block">{darkMode ? "🌙" : "☀️"}</span>
             <button
@@ -40,6 +40,24 @@ function Header({ onContactClick, darkMode, setDarkMode }) {
               onClick={() => setDarkMode(!darkMode)}
               aria-label="Toggle dark mode"
             />
+            {user ? (
+              <div className="flex items-center gap-2">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                  darkMode ? "bg-green-800 text-green-300" : "bg-green-100 text-green-700"
+                }`}>
+                  {user.name?.charAt(0).toUpperCase()}
+                </div>
+                <button onClick={onSignOut} className={`text-xs font-medium hidden sm:block ${
+                  darkMode ? "text-gray-400 hover:text-red-400" : "text-gray-500 hover:text-red-500"
+                }`}>
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link to="/signin" className="btn-eco text-xs px-4 py-2 no-underline">
+                Sign In
+              </Link>
+            )}
           </div>
         </nav>
       </div>

@@ -1,6 +1,8 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "./firebase";
 import Header from "./header";
 import Footer from "./footer";
 import Landing from "./landing";
@@ -10,6 +12,8 @@ import Features from "./Features";
 import CropPage from "./pages/CropPage";
 import FertilizerPage from "./pages/FertilizerPage";
 import DiseasePage from "./pages/DiseasePage";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import { Analytics } from "@vercel/analytics/react";
 
 export const DarkModeContext = React.createContext();
@@ -31,6 +35,17 @@ function HomePage({ darkMode, onContactClick }) {
 function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // Listen to Firebase auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = () => signOut(auth);
 
   useEffect(() => {
     document.body.classList.toggle("dark", darkMode);
@@ -45,6 +60,8 @@ function App() {
             onContactClick={() => setIsContactModalOpen(true)}
             darkMode={darkMode}
             setDarkMode={setDarkMode}
+            user={user}
+            onSignOut={handleSignOut}
           />
           <main className="flex-1">
             <Routes>
@@ -52,6 +69,8 @@ function App() {
               <Route path="/crop" element={<CropPage darkMode={darkMode} />} />
               <Route path="/fertilizer" element={<FertilizerPage darkMode={darkMode} />} />
               <Route path="/disease" element={<DiseasePage darkMode={darkMode} />} />
+              <Route path="/signin" element={<SignIn darkMode={darkMode} />} />
+              <Route path="/signup" element={<SignUp darkMode={darkMode} />} />
             </Routes>
           </main>
           <Footer onContactClick={() => setIsContactModalOpen(true)} darkMode={darkMode} />
