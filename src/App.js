@@ -46,6 +46,10 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    document.body.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
   const handleSignOut = () => signOut(auth);
 
   if (authLoading) {
@@ -58,10 +62,6 @@ function App() {
       </div>
     );
   }
-
-  useEffect(() => {
-    document.body.classList.toggle("dark", darkMode);
-  }, [darkMode]);
 
   return (
     <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
