@@ -30,6 +30,7 @@ function SignUp({ darkMode }) {
       await updateProfile(cred.user, { displayName: form.name });
       navigate("/");
     } catch (err) {
+      console.error("Sign up error:", err.code, err.message);
       switch (err.code) {
         case "auth/email-already-in-use":
           setError("An account with this email already exists.");
@@ -41,7 +42,7 @@ function SignUp({ darkMode }) {
           setError("Password is too weak. Use at least 6 characters.");
           break;
         default:
-          setError("Sign up failed. Please try again.");
+          setError(`Sign up failed: ${err.code || err.message}`);
       }
     } finally {
       setLoading(false);

@@ -19,6 +19,7 @@ function SignIn({ darkMode }) {
       await signInWithEmailAndPassword(auth, form.email, form.password);
       navigate("/");
     } catch (err) {
+      console.error("Sign in error:", err.code, err.message);
       switch (err.code) {
         case "auth/user-not-found":
         case "auth/wrong-password":
@@ -29,7 +30,7 @@ function SignIn({ darkMode }) {
           setError("Too many attempts. Please try again later.");
           break;
         default:
-          setError("Sign in failed. Please try again.");
+          setError(`Sign in failed: ${err.code || err.message}`);
       }
     } finally {
       setLoading(false);
