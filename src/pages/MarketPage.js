@@ -155,23 +155,36 @@ export default function MarketPage({ darkMode }) {
           </div>
         </div>
 
-        {/* Search + Filter + Sort */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        {/* Search + Sort */}
+        <div className={`flex gap-3 mb-6 items-center p-3 rounded-2xl border ${
+          darkMode ? "bg-gray-800/60 border-green-900" : "bg-white border-green-100"
+        } shadow-sm`}>
+          <span className={`text-lg pl-1 ${darkMode ? "text-green-400" : "text-green-500"}`}>🔍</span>
           <input
             type="text"
-            placeholder="🔍 Search crop..."
+            placeholder="Search crop name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="eco-input flex-1"
+            className={`flex-1 bg-transparent outline-none text-sm ${
+              darkMode ? "text-green-100 placeholder-gray-500" : "text-gray-700 placeholder-gray-400"
+            }`}
           />
+          {search && (
+            <button onClick={() => setSearch("")} className={`text-xs px-2 py-1 rounded-lg ${darkMode ? "text-gray-400 hover:bg-gray-700" : "text-gray-400 hover:bg-gray-100"}`}>
+              ✕
+            </button>
+          )}
+          <div className={`h-5 w-px ${darkMode ? "bg-gray-700" : "bg-gray-200"}`} />
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="eco-input w-40"
+            className={`text-xs font-medium bg-transparent outline-none cursor-pointer pr-1 ${
+              darkMode ? "text-green-400" : "text-green-700"
+            }`}
           >
-            <option value="name">Sort: Name</option>
-            <option value="price">Sort: Price</option>
-            <option value="trend">Sort: Trend</option>
+            <option value="name">A–Z</option>
+            <option value="price">Price ↓</option>
+            <option value="trend">Trend ↓</option>
           </select>
         </div>
 
