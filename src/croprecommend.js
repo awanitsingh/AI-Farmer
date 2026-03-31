@@ -67,35 +67,34 @@ function CropForm({ onSubmit, darkMode }) {
 
 function CropResult({ result, onBack, darkMode }) {
   const cropName = result?.split(" ")[0] || "farm";
-  
-  // Use Wikimedia Commons for crop images - reliable and free
+
   const cropImages = {
-    rice: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/White_rice.jpg/320px-White_rice.jpg",
-    maize: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Corn_-_Zea_mays_-_geograph.org.uk_-_1400982.jpg/320px-Corn_-_Zea_mays_-_geograph.org.uk_-_1400982.jpg",
-    chickpea: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Chickpeas.jpg/320px-Chickpeas.jpg",
-    kidneybeans: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Kidney_beans.jpg/320px-Kidney_beans.jpg",
-    pigeonpeas: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Cajanus_cajan_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-168.jpg/320px-Cajanus_cajan_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-168.jpg",
-    mothbeans: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Moth_bean.jpg/320px-Moth_bean.jpg",
-    mungbean: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Mung_beans.jpg/320px-Mung_beans.jpg",
-    blackgram: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Vigna_mungo.jpg/320px-Vigna_mungo.jpg",
-    lentil: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Lentil_-_Lens_culinaris.jpg/320px-Lentil_-_Lens_culinaris.jpg",
-    pomegranate: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Pomegranate_fruit_-_whole.jpg/320px-Pomegranate_fruit_-_whole.jpg",
-    banana: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Banana-Platano.jpg/320px-Banana-Platano.jpg",
-    mango: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/320px-Hapus_Mango.jpg",
-    grapes: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Kyoho-grape.jpg/320px-Kyoho-grape.jpg",
-    watermelon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/280px-PNG_transparency_demonstration_1.png",
-    muskmelon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Muskmelon_Fruit.jpg/320px-Muskmelon_Fruit.jpg",
-    apple: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/320px-Red_Apple.jpg",
-    orange: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Oranges_and_orange_juice.jpg/320px-Oranges_and_orange_juice.jpg",
-    papaya: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-028.jpg/320px-Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-028.jpg",
-    coconut: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Coconut_on_white_background.jpg/320px-Coconut_on_white_background.jpg",
-    cotton: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Cotton_field_kv07.jpg/320px-Cotton_field_kv07.jpg",
-    jute: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Jute_Field_Bangladesh.jpg/320px-Jute_Field_Bangladesh.jpg",
-    coffee: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG",
+    rice:        "https://images.pexels.com/photos/1537169/pexels-photo-1537169.jpeg?w=400",
+    maize:       "https://images.pexels.com/photos/547263/pexels-photo-547263.jpeg?w=400",
+    chickpea:    "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    kidneybeans: "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
+    pigeonpeas:  "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    mothbeans:   "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    mungbean:    "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    blackgram:   "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    lentil:      "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
+    pomegranate: "https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?w=400",
+    banana:      "https://images.pexels.com/photos/1093038/pexels-photo-1093038.jpeg?w=400",
+    mango:       "https://images.pexels.com/photos/918643/pexels-photo-918643.jpeg?w=400",
+    grapes:      "https://images.pexels.com/photos/760281/pexels-photo-760281.jpeg?w=400",
+    watermelon:  "https://images.pexels.com/photos/1313267/pexels-photo-1313267.jpeg?w=400",
+    muskmelon:   "https://images.pexels.com/photos/2894205/pexels-photo-2894205.jpeg?w=400",
+    apple:       "https://images.pexels.com/photos/1510392/pexels-photo-1510392.jpeg?w=400",
+    orange:      "https://images.pexels.com/photos/327098/pexels-photo-327098.jpeg?w=400",
+    papaya:      "https://images.pexels.com/photos/2363345/pexels-photo-2363345.jpeg?w=400",
+    coconut:     "https://images.pexels.com/photos/1120970/pexels-photo-1120970.jpeg?w=400",
+    cotton:      "https://images.pexels.com/photos/5029859/pexels-photo-5029859.jpeg?w=400",
+    jute:        "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=400",
+    coffee:      "https://images.pexels.com/photos/894695/pexels-photo-894695.jpeg?w=400",
   };
 
   const key = cropName.toLowerCase().replace(/\s/g, "");
-  const img = cropImages[key] || "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/320px-Camponotus_flavomarginatus_ant.jpg";
+  const img = cropImages[key] || "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=400";
 
   return (
     <div className="flex flex-col md:flex-row gap-8 items-center">

@@ -87,14 +87,14 @@ function FertResult({ result, onBack, darkMode }) {
   const fertName = result?.split(" is")[0] || "fertilizer";
 
   const fertImages = {
-    "urea": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Urea_ball-and-stick.png/240px-Urea_ball-and-stick.png",
-    "dap": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Fertilizer_urea_ball.jpg/320px-Fertilizer_urea_ball.jpg",
-    "mop": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Potassium-chloride-3D-ionic.png/240px-Potassium-chloride-3D-ionic.png",
-    "npk": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Fertilizer_on_field.jpg/320px-Fertilizer_on_field.jpg",
-    "ssp": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Fertilizer_urea_ball.jpg/320px-Fertilizer_urea_ball.jpg",
-    "compost": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Compost_Heap.jpg/320px-Compost_Heap.jpg",
-    "potassium": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Potassium-chloride-3D-ionic.png/240px-Potassium-chloride-3D-ionic.png",
-    "gypsum": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Gypse_Arignac.jpg/320px-Gypse_Arignac.jpg",
+    "urea":      "https://images.pexels.com/photos/5029859/pexels-photo-5029859.jpeg?w=400",
+    "dap":       "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=400",
+    "mop":       "https://images.pexels.com/photos/1382102/pexels-photo-1382102.jpeg?w=400",
+    "npk":       "https://images.pexels.com/photos/1382102/pexels-photo-1382102.jpeg?w=400",
+    "ssp":       "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=400",
+    "compost":   "https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg?w=400",
+    "potassium": "https://images.pexels.com/photos/1382102/pexels-photo-1382102.jpeg?w=400",
+    "gypsum":    "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=400",
   };
 
   const key = Object.keys(fertImages).find(k => fertName.toLowerCase().includes(k)) || "npk";

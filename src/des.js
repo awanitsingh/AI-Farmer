@@ -54,7 +54,7 @@ function Des({ darkMode }) {
           <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-4 ${
             darkMode ? "bg-green-900/50 text-green-300" : "bg-green-100 text-green-700"
           }`}>
-            🌿 Why Choose AI-Based Integrated Crop Advisory System
+            🌿 Why Choose AI Farmer
           </div>
 
           <h2 className="section-title mb-4">
@@ -62,7 +62,7 @@ function Des({ darkMode }) {
           </h2>
 
           <p className={`text-base leading-relaxed mb-8 ${darkMode ? "text-green-300/80" : "text-gray-600"}`}>
-            AI-Based Integrated Crop Advisory System is an integrated platform combining three powerful ML models to assist farmers,
+            AI Farmer is an integrated platform combining three powerful ML models to assist farmers,
             hobbyists, and agriculture enthusiasts with data-driven decisions.
           </p>
 

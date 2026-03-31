@@ -78,7 +78,7 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
             <span className={`text-base font-bold font-mono tracking-tight hidden sm:block ${
               darkMode ? "text-green-400" : "text-green-700"
             }`}>
-              AI Crop Advisory
+            AI Farmer
             </span>
           </button>
 

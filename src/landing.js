@@ -34,7 +34,7 @@ function Landing({ darkMode }) {
         <p className={`mx-auto max-w-2xl text-lg leading-relaxed mb-10 ${
           darkMode ? "text-green-300" : "text-gray-600"
         }`}>
-          AI-Based Integrated Crop Advisory System harnesses the power of machine learning to provide intelligent crop recommendations,
+          AI Farmer harnesses the power of machine learning to provide intelligent crop recommendations,
           fertilizer suggestions, and plant disease detection — empowering farmers for a greener future.
         </p>
 

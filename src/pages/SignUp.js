@@ -63,7 +63,7 @@ function SignUp({ darkMode }) {
           </div>
           <h2 className="section-title text-2xl mb-1">Create Account</h2>
           <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-            Join AI Crop Advisory System today
+            Join AI Farmer System today
           </p>
         </div>
 

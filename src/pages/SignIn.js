@@ -51,7 +51,7 @@ function SignIn({ darkMode }) {
           </div>
           <h2 className="section-title text-2xl mb-1">Welcome Back</h2>
           <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-            Sign in to your AI Crop Advisory account
+            Sign in to your AI Farmer account
           </p>
         </div>
 

@@ -25,7 +25,7 @@ function Footer({ onContactClick, darkMode }) {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-xl shadow-lg">
                 🌿
               </div>
-              <span className="text-lg font-bold text-green-300">AI Crop Advisory</span>
+              <span className="text-lg font-bold text-green-300">AI Farmer</span>
             </div>
             <p className="text-green-200/70 text-sm leading-relaxed mb-6">
               Empowering farmers with AI-driven crop recommendations, fertilizer guidance, and plant disease detection for a sustainable future.
@@ -120,7 +120,7 @@ function Footer({ onContactClick, darkMode }) {
       <div className="border-t border-green-800/50">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-green-500 text-xs">
-            © 2026 AI-Based Integrated Crop Advisory System. All rights reserved.
+            © 2026 AI Farmer. All rights reserved.
           </p>
           <p className="text-green-500 text-xs">
             Developed with 🌿 by{" "}

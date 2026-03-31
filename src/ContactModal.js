@@ -54,7 +54,7 @@ function ContactModal({ isOpen, onClose, darkMode }) {
             </div>
             <h2 className="section-title mb-2">Get In Touch</h2>
             <p className={`text-sm max-w-md mx-auto ${sub}`}>
-              Have questions about the AI-Based Integrated Crop Advisory System? Reach out for support, collaboration, or just to say hello.
+              Have questions about the AI Farmer? Reach out for support, collaboration, or just to say hello.
             </p>
           </div>
 
