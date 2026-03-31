@@ -107,17 +107,25 @@ export default function MarketPage({ darkMode }) {
         </button>
 
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-8 gap-4">
           <div>
             <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-2 ${darkMode ? "bg-green-900/50 text-green-300" : "bg-green-100 text-green-700"}`}>
               📈 Live Market Data
             </div>
-            <h2 className="section-title text-2xl mb-1">Crop Market Prices</h2>
-            <p className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>
-              🕐 Last updated: {lastUpdated} · Prices in Indian Mandi (₹/quintal)
-            </p>
+            <h2 className="section-title text-2xl mb-3">Crop Market Prices</h2>
+            <div className="flex flex-wrap gap-3">
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium ${darkMode ? "bg-gray-800 text-gray-300 border border-green-900" : "bg-white text-gray-600 border border-green-100 shadow-sm"}`}>
+                🕐 Updated: <span className={`font-semibold ${darkMode ? "text-green-400" : "text-green-600"}`}>{lastUpdated}</span>
+              </div>
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium ${darkMode ? "bg-gray-800 text-gray-300 border border-green-900" : "bg-white text-gray-600 border border-green-100 shadow-sm"}`}>
+                💰 Unit: <span className={`font-semibold ${darkMode ? "text-green-400" : "text-green-600"}`}>₹/quintal</span>
+              </div>
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium ${darkMode ? "bg-gray-800 text-gray-300 border border-green-900" : "bg-white text-gray-600 border border-green-100 shadow-sm"}`}>
+                📍 Market: <span className={`font-semibold ${darkMode ? "text-green-400" : "text-green-600"}`}>Indian Mandi</span>
+              </div>
+            </div>
           </div>
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs ${darkMode ? "bg-green-900/30 text-green-400" : "bg-green-100 text-green-700"}`}>
+          <div className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium flex-shrink-0 ${darkMode ? "bg-green-900/30 text-green-400 border border-green-800" : "bg-green-100 text-green-700"}`}>
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             Live Prices
           </div>
