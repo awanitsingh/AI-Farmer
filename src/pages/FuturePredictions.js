@@ -143,7 +143,7 @@ export default function FuturePredictions({ darkMode }) {
           </div>
           <h2 className="section-title text-2xl mb-2">Future Predictions</h2>
           <p className={`text-sm max-w-xl mx-auto ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-            Enter your farm details to get AI-powered forecasts for yield, prices, weather, soil health, and optimal planting time.
+            Enter your farm details to get AI-powered forecasts for yield, prices, soil health, and optimal planting time.
           </p>
         </div>
 
