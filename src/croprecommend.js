@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import bg2 from "./img/bg1.jpg";
 import { saveHistory } from "./utils/saveHistory";
 import { predictCrop } from "./utils/cropPredictor";
 
@@ -67,10 +66,20 @@ function CropForm({ onSubmit, darkMode }) {
 }
 
 function CropResult({ result, onBack, darkMode }) {
+  // Extract crop name from result string e.g. "Rice is the best crop..."
+  const cropName = result?.split(" ")[0]?.toLowerCase() || "farm";
+  const imageUrl = `https://source.unsplash.com/400x300/?${cropName},crop,farm`;
+
   return (
     <div className="flex flex-col md:flex-row gap-8 items-center">
       <div className="md:w-1/2">
-        <img src={bg2} alt="Crop" className="rounded-2xl w-full object-cover shadow-lg" style={{ maxHeight: "340px" }} />
+        <img
+          src={imageUrl}
+          alt={cropName}
+          className="rounded-2xl w-full object-cover shadow-lg"
+          style={{ maxHeight: "340px" }}
+          onError={(e) => { e.target.src = "https://source.unsplash.com/400x300/?agriculture,field"; }}
+        />
       </div>
       <div className="md:w-1/2 text-center">
         <div className={`text-6xl mb-4`}>🌾</div>

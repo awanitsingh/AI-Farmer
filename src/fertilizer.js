@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import bg2 from "./img/bg1.jpg";
 import { saveHistory } from "./utils/saveHistory";
 import { predictFertilizer } from "./utils/fertilizerPredictor";
 
@@ -85,10 +84,20 @@ function FertForm({ onSubmit, darkMode }) {
 }
 
 function FertResult({ result, onBack, darkMode }) {
+  // Extract fertilizer name e.g. "Urea is the best..."
+  const fertName = result?.split(" is")[0]?.toLowerCase().replace(/[()]/g, "") || "fertilizer";
+  const imageUrl = `https://source.unsplash.com/400x300/?${fertName},fertilizer,soil`;
+
   return (
     <div className="flex flex-col md:flex-row gap-8 items-center">
       <div className="md:w-1/2">
-        <img src={bg2} alt="Fertilizer" className="rounded-2xl w-full object-cover shadow-lg" style={{ maxHeight: "340px" }} />
+        <img
+          src={imageUrl}
+          alt={fertName}
+          className="rounded-2xl w-full object-cover shadow-lg"
+          style={{ maxHeight: "340px" }}
+          onError={(e) => { e.target.src = "https://source.unsplash.com/400x300/?farming,soil,agriculture"; }}
+        />
       </div>
       <div className="md:w-1/2 text-center">
         <div className="text-6xl mb-4">💊</div>
