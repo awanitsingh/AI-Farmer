@@ -57,7 +57,17 @@ export default function Settings({ darkMode, setDarkMode, user }) {
     } finally { setLoading(false); }
   };
 
-  const card = `eco-card p-6 mb-4 ${darkMode ? "bg-gray-800/60" : ""}`;
+  const [notifications, setNotifications] = useState({
+    predictions: true,
+    weather: true,
+    seasonal: false,
+  });
+
+  const notificationItems = [
+    { key: "predictions", label: "Prediction Results", desc: "Get notified when predictions complete" },
+    { key: "weather",     label: "Weather Alerts",     desc: "Receive weather-based farming tips" },
+    { key: "seasonal",    label: "Seasonal Reminders", desc: "Crop planting and harvesting reminders" },
+  ];
   const label = `block text-xs font-semibold mb-1 ${darkMode ? "text-green-300" : "text-green-800"}`;
 
   return (
@@ -133,25 +143,18 @@ export default function Settings({ darkMode, setDarkMode, user }) {
         {/* Notifications */}
         <div className={card}>
           <h3 className={`text-sm font-bold mb-4 ${darkMode ? "text-green-300" : "text-green-700"}`}>🔔 Notifications</h3>
-          {[
-            { label: "Prediction Results", desc: "Get notified when predictions complete", defaultOn: true },
-            { label: "Weather Alerts", desc: "Receive weather-based farming tips", defaultOn: true },
-            { label: "Seasonal Reminders", desc: "Crop planting and harvesting reminders", defaultOn: false },
-          ].map((n, i) => {
-            const [on, setOn] = useState(n.defaultOn);
-            return (
+          {notificationItems.map((n, i) => (
               <div key={i} className={`flex items-center justify-between py-2.5 border-b last:border-0 ${darkMode ? "border-green-900/50" : "border-green-50"}`}>
                 <div>
                   <p className={`text-sm font-medium ${darkMode ? "text-gray-200" : "text-gray-700"}`}>{n.label}</p>
                   <p className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>{n.desc}</p>
                 </div>
                 <button
-                  className={`dark-toggle ${on ? "active" : ""}`}
-                  onClick={() => setOn(!on)}
+                  className={`dark-toggle ${notifications[n.key] ? "active" : ""}`}
+                  onClick={() => setNotifications(prev => ({ ...prev, [n.key]: !prev[n.key] }))}
                 />
               </div>
-            );
-          })}
+            ))}
         </div>
 
         {/* Change Password */}
