@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { collection, query, where, orderBy, limit, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import WeatherWidget from "../components/WeatherWidget";
 
@@ -12,12 +12,14 @@ export default function Dashboard({ darkMode, user }) {
     if (!user) return;
     const q = query(
       collection(db, "history"),
-      where("userId", "==", user.uid),
-      orderBy("createdAt", "desc"),
-      limit(3)
+      where("userId", "==", user.uid)
     );
     getDocs(q).then((snap) => {
-      setRecent(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      const docs = snap.docs
+        .map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+        .slice(0, 3);
+      setRecent(docs);
     }).catch(() => {});
   }, [user]);
 

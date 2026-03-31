@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, query, where, orderBy, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 import { generatePDF } from "../utils/generatePDF";
 
@@ -21,12 +21,16 @@ export default function HistoryPage({ darkMode, user }) {
     setLoading(true);
     const q = query(
       collection(db, "history"),
-      where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")
+      where("userId", "==", user.uid)
     );
     getDocs(q).then((snap) => {
-      setHistory(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
-    }).catch(console.error).finally(() => setLoading(false));
+      const docs = snap.docs
+        .map((d) => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      setHistory(docs);
+    }).catch((e) => {
+      console.error("Firestore error:", e);
+    }).finally(() => setLoading(false));
   }, [user]);
 
   const handleDelete = async (id) => {
