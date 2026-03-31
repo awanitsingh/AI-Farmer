@@ -1,16 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-// Replace these values with your Firebase project config
-// Go to: https://console.firebase.google.com
-// Create project → Add app (Web) → Copy config here
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: "AIzaSyCdYqgJwvowz2GmA2v2Wc2dya4YYy_nzMM",
+  authDomain: "ai-crop-advisory-7d378.firebaseapp.com",
+  projectId: "ai-crop-advisory-7d378",
+  storageBucket: "ai-crop-advisory-7d378.firebasestorage.app",
+  messagingSenderId: "531878644364",
+  appId: "1:531878644364:web:fb5122b9934b2189a5c9a9",
+  measurementId: "G-89HXTQ31BM",
 };
 
 const app = initializeApp(firebaseConfig);
