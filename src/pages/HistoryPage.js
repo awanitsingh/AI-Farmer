@@ -16,6 +16,19 @@ export default function HistoryPage({ darkMode, user }) {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
 
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    const q = query(
+      collection(db, "history"),
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc")
+    );
+    getDocs(q).then((snap) => {
+      setHistory(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+    }).catch(console.error).finally(() => setLoading(false));
+  }, [user]);
+
   const fetchHistory = async () => {
     if (!user) return;
     setLoading(true);
@@ -33,9 +46,6 @@ export default function HistoryPage({ darkMode, user }) {
       setLoading(false);
     }
   };
-
-  useEffect(() => { fetchHistory(); }, [user]);
-
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "history", id));
     setHistory((prev) => prev.filter((h) => h.id !== id));
