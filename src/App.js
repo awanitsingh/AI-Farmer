@@ -14,6 +14,10 @@ import FertilizerPage from "./pages/FertilizerPage";
 import DiseasePage from "./pages/DiseasePage";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Dashboard from "./pages/Dashboard";
+import HistoryPage from "./pages/HistoryPage";
+import SoilHealth from "./pages/SoilHealth";
+import CropCalendar from "./pages/CropCalendar";
 import { Analytics } from "@vercel/analytics/react";
 
 export const DarkModeContext = React.createContext();
@@ -31,7 +35,6 @@ function HomePage({ darkMode, onContactClick }) {
     </>
   );
 }
-
 function App() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -79,12 +82,16 @@ function App() {
           )}
           <main className="flex-1">
             <Routes>
-              <Route path="/" element={user ? <HomePage darkMode={darkMode} onContactClick={() => setIsContactModalOpen(true)} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/" element={user ? <Dashboard darkMode={darkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/home" element={user ? <HomePage darkMode={darkMode} onContactClick={() => setIsContactModalOpen(true)} /> : <SignIn darkMode={darkMode} />} />
               <Route path="/signin" element={<SignIn darkMode={darkMode} />} />
               <Route path="/signup" element={<SignUp darkMode={darkMode} />} />
-              <Route path="/crop" element={user ? <CropPage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
-              <Route path="/fertilizer" element={user ? <FertilizerPage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
-              <Route path="/disease" element={user ? <DiseasePage darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/crop" element={user ? <CropPage darkMode={darkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/fertilizer" element={user ? <FertilizerPage darkMode={darkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/disease" element={user ? <DiseasePage darkMode={darkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/history" element={user ? <HistoryPage darkMode={darkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/soil" element={user ? <SoilHealth darkMode={darkMode} user={user} /> : <SignIn darkMode={darkMode} />} />
+              <Route path="/calendar" element={user ? <CropCalendar darkMode={darkMode} /> : <SignIn darkMode={darkMode} />} />
             </Routes>
           </main>
           {user && (

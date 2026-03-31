@@ -30,11 +30,13 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
 
           {/* Nav Links */}
           <div className="hidden md:flex items-center gap-1">
-            <a href="/#about" className="nav-link text-sm">About</a>
-            <a href="/#features" className="nav-link text-sm">Features</a>
+            <button onClick={() => navigate("/")} className="nav-link text-sm cursor-pointer bg-transparent border-none">Dashboard</button>
             <button onClick={() => navigate("/crop")} className="nav-link text-sm cursor-pointer bg-transparent border-none">Crop</button>
             <button onClick={() => navigate("/fertilizer")} className="nav-link text-sm cursor-pointer bg-transparent border-none">Fertilizer</button>
             <button onClick={() => navigate("/disease")} className="nav-link text-sm cursor-pointer bg-transparent border-none">Disease</button>
+            <button onClick={() => navigate("/soil")} className="nav-link text-sm cursor-pointer bg-transparent border-none">Soil</button>
+            <button onClick={() => navigate("/calendar")} className="nav-link text-sm cursor-pointer bg-transparent border-none">Calendar</button>
+            <button onClick={() => navigate("/history")} className="nav-link text-sm cursor-pointer bg-transparent border-none">History</button>
             <button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="nav-link text-sm cursor-pointer bg-transparent border-none">Contact</button>
           </div>
 

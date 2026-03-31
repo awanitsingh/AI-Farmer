@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import bg2 from "./img/bg1.jpg";
+import { saveHistory } from "./utils/saveHistory";
 
 const soilTypes = ["Loamy", "Sandy", "Clayey", "Black", "Red"];
 const cropTypes = ["Sugarcane", "Cotton", "Millets", "Paddy", "Pulses", "Wheat", "Tobacco", "Barley", "Oil seeds", "Ground Nuts", "Maize"];
@@ -101,7 +102,7 @@ function FertResult({ result, onBack, darkMode }) {
   );
 }
 
-function Fertilizer({ darkMode }) {
+function Fertilizer({ darkMode, user }) {
   const [result, setResult] = useState(null);
 
   const handleSubmit = async (formValues) => {
@@ -113,6 +114,7 @@ function Fertilizer({ darkMode }) {
       });
       const data = await res.json();
       setResult(data.result);
+      if (user) await saveHistory(user.uid, "fertilizer", formValues, data.result);
     } catch (err) {
       console.error("Error:", err);
     }

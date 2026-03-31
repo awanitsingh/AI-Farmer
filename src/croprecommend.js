@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import bg2 from "./img/bg1.jpg";
+import { saveHistory } from "./utils/saveHistory";
 
 const inputFields = [
   { name: "Nitrogen", label: "Nitrogen (N)", placeholder: "e.g. 90", step: "1", icon: "🧪" },
@@ -83,7 +84,7 @@ function CropResult({ result, onBack, darkMode }) {
   );
 }
 
-function Croprecommend({ darkMode }) {
+function Croprecommend({ darkMode, user }) {
   const [result, setResult] = useState(null);
 
   const handleSubmit = async (formValues) => {
@@ -95,6 +96,7 @@ function Croprecommend({ darkMode }) {
       });
       const data = await res.json();
       setResult(data.result);
+      if (user) await saveHistory(user.uid, "crop", formValues, data.result);
     } catch (err) {
       console.error("Error:", err);
     }
