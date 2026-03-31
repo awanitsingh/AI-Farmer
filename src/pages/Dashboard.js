@@ -32,6 +32,7 @@ export default function Dashboard({ darkMode, user }) {
     { icon: "📊", label: "History", path: "/history", color: "from-green-500 to-teal-600" },
     { icon: "🧮", label: "Soil Health", path: "/soil", color: "from-yellow-500 to-green-500" },
     { icon: "📅", label: "Crop Calendar", path: "/calendar", color: "from-orange-400 to-green-500" },
+    { icon: "📈", label: "Market Prices", path: "/market", color: "from-blue-400 to-green-500" },
   ];
 
   const typeIcon = { crop: "🌾", fertilizer: "💧", disease: "🔬" };

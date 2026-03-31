@@ -14,14 +14,15 @@ const navItems = [
     ],
   },
   {
-    label: "Tools",
-    icon: "🧰",
+    label: "Farm Tools",
+    icon: "🌱",
     children: [
       { label: "Soil Health", path: "/soil", icon: "🧮" },
       { label: "Crop Calendar", path: "/calendar", icon: "📅" },
     ],
   },
   { label: "History", path: "/history", icon: "📊" },
+  { label: "Market",  path: "/market",  icon: "📈" },
 ];
 
 function DropdownMenu({ items, darkMode, navigate, onClose }) {
