@@ -3,52 +3,74 @@ export default function Logo({ size = 36 }) {
     <svg
       width={size}
       height={size}
-      viewBox="0 0 40 40"
+      viewBox="0 0 48 48"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Background circle */}
-      <circle cx="20" cy="20" r="20" fill="url(#logoGrad)" />
+      {/* Background circle — earthy gradient */}
+      <circle cx="24" cy="24" r="24" fill="url(#ecoBg)" />
 
-      {/* Leaf shape */}
+      {/* Sun rays */}
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => {
+        const rad = (angle * Math.PI) / 180;
+        const x1 = 24 + Math.cos(rad) * 10;
+        const y1 = 24 + Math.sin(rad) * 10;
+        const x2 = 24 + Math.cos(rad) * 14;
+        const y2 = 24 + Math.sin(rad) * 14;
+        return (
+          <line
+            key={i}
+            x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="rgba(255,255,255,0.5)"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+        );
+      })}
+
+      {/* Sun circle */}
+      <circle cx="24" cy="24" r="7" fill="rgba(255,255,255,0.2)" />
+      <circle cx="24" cy="24" r="5" fill="rgba(255,255,255,0.35)" />
+
+      {/* Earth / ground arc */}
       <path
-        d="M20 8 C20 8 10 14 10 22 C10 27 14.5 31 20 31 C25.5 31 30 27 30 22 C30 14 20 8 20 8Z"
-        fill="white"
-        fillOpacity="0.25"
+        d="M10 34 Q24 28 38 34"
+        stroke="rgba(255,255,255,0.6)"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
       />
+
+      {/* Stem */}
+      <line
+        x1="24" y1="34"
+        x2="24" y2="26"
+        stroke="white"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+
+      {/* Left leaf */}
       <path
-        d="M20 10 C20 10 12 16 12 23 C12 27.4 15.6 31 20 31 C24.4 31 28 27.4 28 23 C28 16 20 10 20 10Z"
+        d="M24 30 C20 28 17 24 19 21 C21 24 22 27 24 30Z"
         fill="white"
         fillOpacity="0.9"
       />
 
-      {/* Center vein */}
-      <line x1="20" y1="12" x2="20" y2="30" stroke="#16a34a" strokeWidth="1.2" strokeLinecap="round" />
+      {/* Right leaf */}
+      <path
+        d="M24 28 C28 26 31 22 29 19 C27 22 26 25 24 28Z"
+        fill="white"
+        fillOpacity="0.75"
+      />
 
-      {/* Side veins */}
-      <line x1="20" y1="17" x2="14" y2="21" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="20" y1="20" x2="14" y2="24" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="20" y1="17" x2="26" y2="21" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="20" y1="20" x2="26" y2="24" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-
-      {/* AI circuit dots */}
-      <circle cx="14" cy="21" r="1.2" fill="#16a34a" />
-      <circle cx="14" cy="24" r="1.2" fill="#16a34a" />
-      <circle cx="26" cy="21" r="1.2" fill="#16a34a" />
-      <circle cx="26" cy="24" r="1.2" fill="#16a34a" />
-
-      {/* Small circuit lines extending out */}
-      <line x1="12.8" y1="21" x2="10" y2="21" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="10" y1="21" x2="10" y2="24" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="10" y1="24" x2="12.8" y2="24" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-
-      <line x1="27.2" y1="21" x2="30" y2="21" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="30" y1="21" x2="30" y2="24" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
-      <line x1="30" y1="24" x2="27.2" y2="24" stroke="#16a34a" strokeWidth="0.8" strokeLinecap="round" />
+      {/* Sprout tip */}
+      <circle cx="24" cy="25.5" r="1.2" fill="white" />
 
       <defs>
-        <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#22c55e" />
+        <linearGradient id="ecoBg" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#4ade80" />
+          <stop offset="50%" stopColor="#22c55e" />
           <stop offset="100%" stopColor="#15803d" />
         </linearGradient>
       </defs>
