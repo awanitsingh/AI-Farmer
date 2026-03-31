@@ -47,13 +47,16 @@ export default function WeatherWidget({ darkMode, onWeatherLoad }) {
           const d = weatherData.daily;
 
           // Reverse geocode
-          const geoRes = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-          );
-          const geoData = await geoRes.json();
-          const cityName =
-            geoData.address?.city || geoData.address?.town ||
-            geoData.address?.village || geoData.address?.county || "Your Location";
+          let cityName = "Your Location";
+          try {
+            const geoRes = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+              { headers: { "User-Agent": "AIFarmer/1.0 (awanitsingh8873@gmail.com)" } }
+            );
+            const geoData = await geoRes.json();
+            cityName = geoData.address?.city || geoData.address?.town ||
+              geoData.address?.village || geoData.address?.county || "Your Location";
+          } catch { /* use default */ }
 
           const w = {
             temp:      Math.round(c.temperature_2m),
