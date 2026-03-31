@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Logo from "./components/Logo";
 
 const navItems = [
@@ -26,7 +26,7 @@ const navItems = [
 
 function DropdownMenu({ items, darkMode, navigate, onClose }) {
   return (
-    <div className={`absolute top-full left-0 mt-2 w-52 rounded-2xl shadow-xl border py-2 z-50 ${
+    <div className={`absolute top-full left-0 mt-1 w-52 rounded-2xl shadow-xl border py-2 z-50 ${
       darkMode ? "bg-gray-800 border-green-900" : "bg-white border-green-100"
     }`}>
       {items.map((item, i) => (
@@ -34,9 +34,7 @@ function DropdownMenu({ items, darkMode, navigate, onClose }) {
           key={i}
           onClick={() => { navigate(item.path); onClose(); }}
           className={`w-full text-left px-4 py-2.5 flex items-center gap-3 text-sm transition-colors ${
-            darkMode
-              ? "text-green-200 hover:bg-gray-700"
-              : "text-gray-700 hover:bg-green-50"
+            darkMode ? "text-green-200 hover:bg-gray-700" : "text-gray-700 hover:bg-green-50"
           }`}
         >
           <span>{item.icon}</span>
@@ -53,13 +51,35 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [userDropdown, setUserDropdown] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const dropdownTimers = useRef({});
 
   const displayName = user?.displayName || user?.email?.split("@")[0] || "User";
   const initials = displayName.slice(0, 2).toUpperCase();
-
   const isActive = (path) => location.pathname === path;
-
   const closeAll = () => { setOpenDropdown(null); setUserDropdown(false); };
+
+  // Hover handlers with delay to prevent flicker
+  const handleMouseEnter = (key) => {
+    clearTimeout(dropdownTimers.current[key]);
+    setOpenDropdown(key);
+  };
+
+  const handleMouseLeave = (key) => {
+    dropdownTimers.current[key] = setTimeout(() => {
+      setOpenDropdown((prev) => (prev === key ? null : prev));
+    }, 150);
+  };
+
+  const handleUserEnter = () => {
+    clearTimeout(dropdownTimers.current["user"]);
+    setUserDropdown(true);
+  };
+
+  const handleUserLeave = () => {
+    dropdownTimers.current["user"] = setTimeout(() => {
+      setUserDropdown(false);
+    }, 150);
+  };
 
   return (
     <header className={`sticky top-0 z-50 backdrop-blur-md border-b ${
@@ -77,14 +97,19 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
             <span className={`text-base font-bold tracking-tight hidden sm:block ${
               darkMode ? "text-green-400" : "text-green-700"
             }`}>
-            AI Farmer
+              AI Farmer
             </span>
           </button>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item, i) => (
-              <div key={i} className="relative">
+              <div
+                key={i}
+                className="relative"
+                onMouseEnter={() => item.children && handleMouseEnter(i)}
+                onMouseLeave={() => item.children && handleMouseLeave(i)}
+              >
                 {item.children ? (
                   <>
                     <button
@@ -133,20 +158,16 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
             </button>
           </nav>
 
-          {/* Right side */}
+          {/* Right — User avatar with dropdown */}
           <div className="flex items-center gap-2">
-            {/* Dark mode */}
-            <button
-              className={`dark-toggle ${darkMode ? "active" : ""}`}
-              onClick={() => setDarkMode(!darkMode)}
-              aria-label="Toggle dark mode"
-            />
-
-            {/* User avatar */}
             {user && (
-              <div className="relative">
+              <div
+                className="relative"
+                onMouseEnter={handleUserEnter}
+                onMouseLeave={handleUserLeave}
+              >
                 <button
-                  onClick={() => { setUserDropdown(!userDropdown); setOpenDropdown(null); }}
+                  onClick={() => setUserDropdown(!userDropdown)}
                   className={`flex items-center gap-2 px-2 py-1 rounded-xl transition-all ${
                     darkMode ? "hover:bg-gray-700" : "hover:bg-green-50"
                   }`}
@@ -163,13 +184,47 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
                 </button>
 
                 {userDropdown && (
-                  <div className={`absolute right-0 mt-2 w-48 rounded-2xl shadow-xl border py-2 z-50 ${
+                  <div className={`absolute right-0 mt-1 w-56 rounded-2xl shadow-xl border py-2 z-50 ${
                     darkMode ? "bg-gray-800 border-green-900" : "bg-white border-green-100"
                   }`}>
-                    <div className={`px-4 py-2 border-b ${darkMode ? "border-green-900" : "border-green-50"}`}>
-                      <p className={`text-xs font-semibold truncate ${darkMode ? "text-green-300" : "text-green-700"}`}>{displayName}</p>
-                      <p className={`text-xs truncate ${darkMode ? "text-gray-400" : "text-gray-400"}`}>{user.email}</p>
+                    {/* User info */}
+                    <div className={`px-4 py-3 border-b ${darkMode ? "border-green-900" : "border-green-50"}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-sm font-bold text-white">
+                          {initials}
+                        </div>
+                        <div className="min-w-0">
+                          <p className={`text-sm font-semibold truncate ${darkMode ? "text-green-300" : "text-green-700"}`}>{displayName}</p>
+                          <p className={`text-xs truncate ${darkMode ? "text-gray-400" : "text-gray-400"}`}>{user.email}</p>
+                        </div>
+                      </div>
                     </div>
+
+                    {/* Dark mode toggle */}
+                    <div className={`flex items-center justify-between px-4 py-2.5 ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+                      <span className="text-sm flex items-center gap-2">
+                        {darkMode ? "🌙" : "☀️"} {darkMode ? "Dark Mode" : "Light Mode"}
+                      </span>
+                      <button
+                        className={`dark-toggle ${darkMode ? "active" : ""}`}
+                        onClick={() => setDarkMode(!darkMode)}
+                        aria-label="Toggle dark mode"
+                      />
+                    </div>
+
+                    {/* Settings */}
+                    <button
+                      onClick={() => { navigate("/settings"); setUserDropdown(false); }}
+                      className={`w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 transition-colors ${
+                        darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-700 hover:bg-green-50"
+                      }`}
+                    >
+                      ⚙️ Settings
+                    </button>
+
+                    <div className={`border-t my-1 ${darkMode ? "border-green-900" : "border-green-50"}`} />
+
+                    {/* Sign out */}
                     <button
                       onClick={() => { setUserDropdown(false); onSignOut(); }}
                       className={`w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 transition-colors ${
@@ -237,14 +292,17 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
             >
               ✉️ Contact
             </button>
+            <button
+              onClick={() => { navigate("/settings"); setMobileOpen(false); }}
+              className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 bg-transparent border-none cursor-pointer ${
+                darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-600 hover:bg-green-50"
+              }`}
+            >
+              ⚙️ Settings
+            </button>
           </div>
         )}
       </div>
-
-      {/* Backdrop to close dropdowns */}
-      {(openDropdown !== null || userDropdown) && (
-        <div className="fixed inset-0 z-40" onClick={closeAll} />
-      )}
     </header>
   );
 }
