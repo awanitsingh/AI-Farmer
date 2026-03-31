@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import Logo from "./components/Logo";
 
 const navItems = [
   { label: "Dashboard", path: "/", icon: "🏠" },
@@ -72,10 +73,8 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
             onClick={() => { navigate("/"); closeAll(); }}
             className="flex items-center gap-2 bg-transparent border-none cursor-pointer flex-shrink-0"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-md">
-              <span className="text-lg">🌿</span>
-            </div>
-            <span className={`text-base font-bold font-mono tracking-tight hidden sm:block ${
+            <Logo size={36} />
+            <span className={`text-base font-bold tracking-tight hidden sm:block ${
               darkMode ? "text-green-400" : "text-green-700"
             }`}>
             AI Farmer
