@@ -28,7 +28,7 @@ function SignUp({ darkMode }) {
     try {
       const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
       await updateProfile(cred.user, { displayName: form.name });
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error("Sign up error:", err.code, err.message);
       switch (err.code) {

@@ -63,7 +63,7 @@ export default function SoilHealth({ darkMode }) {
   return (
     <div className={`min-h-screen ${darkMode ? "bg-gray-950" : "bg-green-50"}`}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <button onClick={() => navigate("/")} className={`text-sm font-medium mb-6 flex items-center gap-1 ${darkMode ? "text-green-400" : "text-green-700"}`}>
+        <button onClick={() => navigate("/dashboard")} className={`text-sm font-medium mb-6 flex items-center gap-1 ${darkMode ? "text-green-400" : "text-green-700"}`}>
           ← Back to Dashboard
         </button>
 

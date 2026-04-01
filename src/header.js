@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import Logo from "./components/Logo";
 
 const navItems = [
-  { label: "Dashboard", path: "/", icon: "🏠" },
+  { label: "Dashboard", path: "/dashboard", icon: "🏠" },
   {
     label: "AI Tools",
     icon: "🤖",

@@ -17,7 +17,7 @@ function SignIn({ darkMode }) {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       console.error("Sign in error:", err.code, err.message);
       switch (err.code) {
