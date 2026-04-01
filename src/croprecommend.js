@@ -206,7 +206,7 @@ function Croprecommend({ darkMode, user }) {
   const handleSubmit = async (formValues) => {
     try {
       // Try the ML API first (accurate)
-      const res = await fetch("https://karthikcropapi.onrender.com/predict", {
+      const res = await fetch("https://your-new-crop-api.onrender.com/predict", {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(formValues),
