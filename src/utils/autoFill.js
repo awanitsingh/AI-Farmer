@@ -47,10 +47,23 @@ export async function autoFillFromLocation() {
           // Estimate soil values from location
           const soil = estimateSoilValues(latitude, longitude);
 
+          // Get city name
+          let city = "";
+          try {
+            const geoRes = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+              { headers: { "User-Agent": "AIFarmer/1.0 (awanitsingh8873@gmail.com)" } }
+            );
+            const geoData = await geoRes.json();
+            city = geoData.address?.city || geoData.address?.town ||
+              geoData.address?.village || geoData.address?.county || "";
+          } catch { /* ignore */ }
+
           resolve({
             temperature: c.temperature_2m?.toFixed(1) || 25,
             humidity:    c.relative_humidity_2m || 60,
             rainfall:    c.precipitation || 0,
+            city,
             ...soil,
           });
         } catch (e) {

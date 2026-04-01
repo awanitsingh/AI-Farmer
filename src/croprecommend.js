@@ -45,11 +45,9 @@ function CropForm({ onSubmit, darkMode }) {
         ph:          data.ph,
         rainfall:    data.rainfall,
       });
-      setAutoMsg("✅ Values auto-filled from your location!");
-      setTimeout(() => setAutoMsg(""), 3000);
+      setAutoMsg(`✅ Auto-filled from ${data.city || "your location"}!`);
     } catch {
       setAutoMsg("⚠️ Could not detect location. Please allow location access.");
-      setTimeout(() => setAutoMsg(""), 4000);
     } finally {
       setAutoLoading(false);
     }
@@ -73,7 +71,11 @@ function CropForm({ onSubmit, darkMode }) {
       {/* Auto-fill button */}
       <div className="flex items-center justify-between mb-4">
         <p className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-          Enter values manually or auto-fill from your location
+          {autoMsg.startsWith("✅") ? (
+            <span className={darkMode ? "text-green-400" : "text-green-600"}>
+              📍 {autoMsg.replace("✅ Auto-filled from ", "").replace("!", "")}
+            </span>
+          ) : "Enter values manually or auto-fill from your location"}
         </p>
         <button
           type="button"
