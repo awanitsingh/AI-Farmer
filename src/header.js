@@ -150,14 +150,7 @@ function Header({ darkMode, setDarkMode, user, onSignOut }) {
                 )}
               </div>
             ))}
-            <button
-              onClick={() => { onContactClick(); closeAll(); }}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all bg-transparent border-none cursor-pointer ${
-                darkMode ? "text-gray-300 hover:bg-gray-800 hover:text-green-300" : "text-gray-600 hover:bg-green-50 hover:text-green-700"
-              }`}
-            >
-              <span>✉️</span> Contact
-            </button>          </nav>
+          </nav>
 
           {/* Right — User avatar with dropdown */}
           <div className="flex items-center gap-2">
@@ -285,14 +278,6 @@ function Header({ darkMode, setDarkMode, user, onSignOut }) {
                 )}
               </div>
             ))}
-            <button
-              onClick={() => { onContactClick(); setMobileOpen(false); }}
-              className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 bg-transparent border-none cursor-pointer ${
-                darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-600 hover:bg-green-50"
-              }`}
-            >
-              ✉️ Contact
-            </button>
             <button
               onClick={() => { navigate("/settings"); setMobileOpen(false); }}
               className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 bg-transparent border-none cursor-pointer ${
