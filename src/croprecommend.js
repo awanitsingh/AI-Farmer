@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { saveHistory } from "./utils/saveHistory";
 import { predictCrop } from "./utils/cropPredictor";
+import { autoFillFromLocation } from "./utils/autoFill";
 
 const inputFields = [
-  { name: "Nitrogen", label: "Nitrogen (N)", placeholder: "e.g. 90", step: "1", icon: "🧪" },
-  { name: "Phosporus", label: "Phosphorus (P)", placeholder: "e.g. 42", step: "1", icon: "🧫" },
-  { name: "Potassium", label: "Potassium (K)", placeholder: "e.g. 43", step: "1", icon: "⚗️" },
-  { name: "Temperature", label: "Temperature (°C)", placeholder: "e.g. 25.5", step: "0.01", icon: "🌡️" },
-  { name: "Humidity", label: "Humidity (%)", placeholder: "e.g. 80", step: "0.01", icon: "💧" },
-  { name: "Ph", label: "pH Value", placeholder: "e.g. 6.5", step: "0.01", icon: "🔬" },
-  { name: "Rainfall", label: "Rainfall (mm)", placeholder: "e.g. 200", step: "0.01", icon: "🌧️" },
+  { name: "Nitrogen",    label: "Nitrogen (N)",      placeholder: "e.g. 90",  step: "1",    icon: "🧪" },
+  { name: "Phosporus",   label: "Phosphorus (P)",     placeholder: "e.g. 42",  step: "1",    icon: "🧫" },
+  { name: "Potassium",   label: "Potassium (K)",      placeholder: "e.g. 43",  step: "1",    icon: "⚗️" },
+  { name: "Temperature", label: "Temperature (°C)",   placeholder: "e.g. 25.5",step: "0.01", icon: "🌡️" },
+  { name: "Humidity",    label: "Humidity (%)",        placeholder: "e.g. 80",  step: "0.01", icon: "💧" },
+  { name: "Ph",          label: "pH Value",            placeholder: "e.g. 6.5", step: "0.01", icon: "🔬" },
+  { name: "Rainfall",    label: "Rainfall (mm)",       placeholder: "e.g. 200", step: "0.01", icon: "🌧️" },
 ];
 
 function CropForm({ onSubmit, darkMode }) {
   const [formValues, setFormValues] = useState({
-    N: null, P: null, K: null,
-    temperature: null, humidity: null, ph: null, rainfall: null,
+    N: "", P: "", K: "", temperature: "", humidity: "", ph: "", rainfall: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]     = useState(false);
+  const [autoLoading, setAutoLoading] = useState(false);
+  const [autoMsg, setAutoMsg]     = useState("");
 
   const keyMap = {
     Nitrogen: "N", Phosporus: "P", Potassium: "K",
@@ -29,6 +31,30 @@ function CropForm({ onSubmit, darkMode }) {
     setFormValues({ ...formValues, [key]: e.target.value });
   };
 
+  const handleAutoFill = async () => {
+    setAutoLoading(true);
+    setAutoMsg("");
+    try {
+      const data = await autoFillFromLocation();
+      setFormValues({
+        N:           data.N,
+        P:           data.P,
+        K:           data.K,
+        temperature: data.temperature,
+        humidity:    data.humidity,
+        ph:          data.ph,
+        rainfall:    data.rainfall,
+      });
+      setAutoMsg("✅ Values auto-filled from your location!");
+      setTimeout(() => setAutoMsg(""), 3000);
+    } catch {
+      setAutoMsg("⚠️ Could not detect location. Please allow location access.");
+      setTimeout(() => setAutoMsg(""), 4000);
+    } finally {
+      setAutoLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,8 +62,38 @@ function CropForm({ onSubmit, darkMode }) {
     setLoading(false);
   };
 
+  // Map state keys back to input field names for value binding
+  const valueMap = {
+    Nitrogen: "N", Phosporus: "P", Potassium: "K",
+    Temperature: "temperature", Humidity: "humidity", Ph: "ph", Rainfall: "rainfall",
+  };
+
   return (
     <form onSubmit={handleSubmit}>
+      {/* Auto-fill button */}
+      <div className="flex items-center justify-between mb-4">
+        <p className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          Enter values manually or auto-fill from your location
+        </p>
+        <button
+          type="button"
+          onClick={handleAutoFill}
+          disabled={autoLoading}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            darkMode ? "bg-green-900/50 text-green-300 hover:bg-green-900" : "bg-green-100 text-green-700 hover:bg-green-200"
+          } disabled:opacity-50`}
+        >
+          {autoLoading ? "📍 Detecting..." : "📍 Auto-fill from Location"}
+        </button>
+      </div>
+
+      {autoMsg && (
+        <div className={`mb-4 p-2 rounded-xl text-xs text-center ${
+          autoMsg.startsWith("✅") ? (darkMode ? "bg-green-900/40 text-green-300" : "bg-green-50 text-green-700")
+            : (darkMode ? "bg-yellow-900/40 text-yellow-300" : "bg-yellow-50 text-yellow-700")
+        }`}>{autoMsg}</div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {inputFields.map((f) => (
           <div key={f.name}>
@@ -50,6 +106,7 @@ function CropForm({ onSubmit, darkMode }) {
               placeholder={f.placeholder}
               step={f.step}
               required
+              value={formValues[valueMap[f.name]] ?? ""}
               onChange={handleChange}
               className="eco-input"
             />

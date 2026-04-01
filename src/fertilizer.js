@@ -1,29 +1,54 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { saveHistory } from "./utils/saveHistory";
 import { predictFertilizer } from "./utils/fertilizerPredictor";
+import { autoFillFromLocation } from "./utils/autoFill";
 
 const soilTypes = ["Loamy", "Sandy", "Clayey", "Black", "Red"];
 const cropTypes = ["Sugarcane", "Cotton", "Millets", "Paddy", "Pulses", "Wheat", "Tobacco", "Barley", "Oil seeds", "Ground Nuts", "Maize"];
 
 const numFields = [
-  { name: "Temparature", label: "Temperature (°C)", placeholder: "e.g. 26", step: "0.1", icon: "🌡️" },
-  { name: "Humidity", label: "Humidity (%)", placeholder: "e.g. 52", step: "1", icon: "💧" },
-  { name: "Moisture", label: "Moisture", placeholder: "e.g. 38", step: "1", icon: "🌊" },
-  { name: "Nitrogen", label: "Nitrogen (N)", placeholder: "e.g. 37", step: "1", icon: "🧪" },
-  { name: "Potassium", label: "Potassium (K)", placeholder: "e.g. 0", step: "1", icon: "⚗️" },
-  { name: "Phosphorous", label: "Phosphorous (P)", placeholder: "e.g. 0", step: "1", icon: "🧫" },
+  { name: "Temparature",  label: "Temperature (°C)", placeholder: "e.g. 26", step: "0.1", icon: "🌡️" },
+  { name: "Humidity",     label: "Humidity (%)",      placeholder: "e.g. 52", step: "1",   icon: "💧" },
+  { name: "Moisture",     label: "Moisture",           placeholder: "e.g. 38", step: "1",   icon: "🌊" },
+  { name: "Nitrogen",     label: "Nitrogen (N)",       placeholder: "e.g. 37", step: "1",   icon: "🧪" },
+  { name: "Potassium",    label: "Potassium (K)",      placeholder: "e.g. 0",  step: "1",   icon: "⚗️" },
+  { name: "Phosphorous",  label: "Phosphorous (P)",    placeholder: "e.g. 0",  step: "1",   icon: "🧫" },
 ];
 
 function FertForm({ onSubmit, darkMode }) {
   const [formValues, setFormValues] = useState({
-    Temparature: null, Humidity: null, Moisture: null,
-    Nitrogen: null, Potassium: null, Phosphorous: null,
+    Temparature: "", Humidity: "", Moisture: "",
+    Nitrogen: "", Potassium: "", Phosphorous: "",
     Soil_Type: "Loamy", Crop_Type: "Sugarcane",
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]         = useState(false);
+  const [autoLoading, setAutoLoading] = useState(false);
+  const [autoMsg, setAutoMsg]         = useState("");
 
-  const handleChange = (e) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+  const handleChange = (e) => setFormValues({ ...formValues, [e.target.name]: e.target.value });
+
+  const handleAutoFill = async () => {
+    setAutoLoading(true);
+    setAutoMsg("");
+    try {
+      const data = await autoFillFromLocation();
+      setFormValues(prev => ({
+        ...prev,
+        Temparature:  data.temperature,
+        Humidity:     data.humidity,
+        Moisture:     data.moisture,
+        Nitrogen:     data.N,
+        Potassium:    data.K,
+        Phosphorous:  data.P,
+      }));
+      setAutoMsg("✅ Values auto-filled from your location!");
+      setTimeout(() => setAutoMsg(""), 3000);
+    } catch {
+      setAutoMsg("⚠️ Could not detect location. Please allow location access.");
+      setTimeout(() => setAutoMsg(""), 4000);
+    } finally {
+      setAutoLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -37,6 +62,30 @@ function FertForm({ onSubmit, darkMode }) {
 
   return (
     <form onSubmit={handleSubmit}>
+      {/* Auto-fill button */}
+      <div className="flex items-center justify-between mb-4">
+        <p className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          Enter values manually or auto-fill from your location
+        </p>
+        <button
+          type="button"
+          onClick={handleAutoFill}
+          disabled={autoLoading}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+            darkMode ? "bg-green-900/50 text-green-300 hover:bg-green-900" : "bg-green-100 text-green-700 hover:bg-green-200"
+          } disabled:opacity-50`}
+        >
+          {autoLoading ? "📍 Detecting..." : "📍 Auto-fill from Location"}
+        </button>
+      </div>
+
+      {autoMsg && (
+        <div className={`mb-4 p-2 rounded-xl text-xs text-center ${
+          autoMsg.startsWith("✅") ? (darkMode ? "bg-green-900/40 text-green-300" : "bg-green-50 text-green-700")
+            : (darkMode ? "bg-yellow-900/40 text-yellow-300" : "bg-yellow-50 text-yellow-700")
+        }`}>{autoMsg}</div>
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {numFields.map((f) => (
           <div key={f.name}>
@@ -49,6 +98,7 @@ function FertForm({ onSubmit, darkMode }) {
               placeholder={f.placeholder}
               step={f.step}
               required
+              value={formValues[f.name] ?? ""}
               onChange={handleChange}
               className="eco-input"
             />
