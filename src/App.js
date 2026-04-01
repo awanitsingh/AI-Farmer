@@ -46,10 +46,11 @@ function PublicHome({ darkMode, onContactClick, user }) {
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-1">
               {[
-                { label: "Home",     href: "#"          },
-                { label: "About",    href: "#about"     },
-                { label: "Features", href: "#features"  },
-                { label: "How it Works", href: "#how"   },
+                { label: "Home",         href: "#"         },
+                { label: "About",        href: "#about"    },
+                { label: "Features",     href: "#features" },
+                { label: "How it Works", href: "#how"      },
+                { label: "Help",         href: "#help"     },
               ].map((l, i) => (
                 <a key={i} href={l.href}
                   className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors no-underline ${
@@ -58,12 +59,7 @@ function PublicHome({ darkMode, onContactClick, user }) {
                   {l.label}
                 </a>
               ))}
-              <button onClick={onContactClick}
-                className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors bg-transparent border-none cursor-pointer ${
-                  darkMode ? "text-gray-300 hover:bg-gray-800 hover:text-green-300" : "text-gray-600 hover:bg-green-50 hover:text-green-700"
-                }`}>
-                Contact
-              </button>
+              {/* no contact button */}
             </nav>
 
             {/* CTA buttons */}
@@ -101,6 +97,7 @@ function PublicHome({ darkMode, onContactClick, user }) {
                 { label: "About",        href: "#about"    },
                 { label: "Features",     href: "#features" },
                 { label: "How it Works", href: "#how"      },
+                { label: "Help",         href: "#help"     },
               ].map((l, i) => (
                 <a key={i} href={l.href} onClick={() => setMobileOpen(false)}
                   className={`block px-3 py-2 text-sm rounded-xl no-underline ${
@@ -109,12 +106,6 @@ function PublicHome({ darkMode, onContactClick, user }) {
                   {l.label}
                 </a>
               ))}
-              <button onClick={() => { onContactClick(); setMobileOpen(false); }}
-                className={`w-full text-left px-3 py-2 text-sm bg-transparent border-none cursor-pointer rounded-xl ${
-                  darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-600 hover:bg-green-50"
-                }`}>
-                Contact
-              </button>
               {!user && (
                 <button onClick={() => navigate("/signin")}
                   className={`w-full text-left px-3 py-2 text-sm bg-transparent border-none cursor-pointer rounded-xl ${
@@ -128,7 +119,7 @@ function PublicHome({ darkMode, onContactClick, user }) {
         </div>
       </header>
 
-      <Landing darkMode={darkMode} />
+      <Landing darkMode={darkMode} onContactClick={onContactClick} />
       <Footer onContactClick={onContactClick} darkMode={darkMode} />
     </>
   );
