@@ -21,6 +21,7 @@ import Settings from "./pages/Settings";
 import MarketPage from "./pages/MarketPage";
 import FuturePredictions from "./pages/FuturePredictions";
 import { Analytics } from "@vercel/analytics/react";
+import ChatBot from "./components/ChatBot";
 
 export const DarkModeContext = React.createContext();
 
@@ -136,6 +137,7 @@ function App() {
                 </main>
                 <Footer onContactClick={() => setIsContactModalOpen(true)} darkMode={darkMode} />
                 <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} darkMode={darkMode} />
+                <ChatBot darkMode={darkMode} />
               </Protected>
             } />
           </Routes>
