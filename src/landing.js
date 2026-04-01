@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Logo from "./components/Logo";
 
 const CROPS = ["Rice", "Wheat", "Maize", "Cotton", "Mango", "Sugarcane"];
 
