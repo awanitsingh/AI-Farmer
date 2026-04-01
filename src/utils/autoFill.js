@@ -16,13 +16,20 @@ function estimateSoilValues(lat, lon) {
 }
 
 async function fetchWeatherAndSoil(latitude, longitude) {
+  // Fetch current weather + annual rainfall sum
   const res = await fetch(
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}` +
-    `&current=temperature_2m,relative_humidity_2m,precipitation&timezone=auto`
+    `&current=temperature_2m,relative_humidity_2m` +
+    `&daily=precipitation_sum&past_days=365&forecast_days=1&timezone=auto`
   );
   const data = await res.json();
   const c = data.current;
   const soil = estimateSoilValues(latitude, longitude);
+
+  // Sum last 365 days of daily precipitation for annual rainfall
+  const annualRainfall = data.daily?.precipitation_sum
+    ? Math.round(data.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0))
+    : 100;
 
   // Reverse geocode for city name
   let city = "";
@@ -39,7 +46,7 @@ async function fetchWeatherAndSoil(latitude, longitude) {
   return {
     temperature: c.temperature_2m?.toFixed(1) || 25,
     humidity:    c.relative_humidity_2m || 60,
-    rainfall:    c.precipitation || 0,
+    rainfall:    annualRainfall,
     city,
     ...soil,
   };
