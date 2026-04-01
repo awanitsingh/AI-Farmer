@@ -139,7 +139,7 @@ function CropForm({ onSubmit, darkMode }) {
       </div>
       <div className="text-center">
         <button type="submit" className="btn-eco px-10 py-3 text-base" disabled={loading}>
-          {loading ? "🌱 Predicting..." : "🌾 Get Crop Recommendation"}
+          {loading ? "🌱 Analyzing... (may take ~30s on first use)" : "🌾 Get Crop Recommendation"}
         </button>
       </div>
     </form>
@@ -208,30 +208,48 @@ function Croprecommend({ darkMode, user }) {
   const handleSubmit = async (formValues) => {
     try {
       // Try the ML API first (accurate)
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60000); // 60s timeout
       const res = await fetch("https://ai-farmer-crop-api.onrender.com/predict", {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(formValues),
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
       const data = await res.json();
       if (data.result) {
         setResult(data.result);
         if (user) await saveHistory(user.uid, "crop", formValues, data.result);
         return;
       }
-    } catch { /* API sleeping, fall back to local */ }
+    } catch { /* API sleeping or timeout, fall back to local */ }
 
-    // Fallback to local predictor only if API fails
+    // Fallback: use improved local predictor
+    // Use annual average rainfall if current is 0 (dry day doesn't mean dry region)
+    const adjustedRainfall = +formValues.rainfall < 5
+      ? estimateAnnualRainfall(+formValues.humidity, +formValues.temperature)
+      : +formValues.rainfall;
+
     const localResult = predictCrop({
       N: +formValues.N, P: +formValues.P, K: +formValues.K,
       temperature: +formValues.temperature,
       humidity: +formValues.humidity,
       ph: +formValues.ph,
-      rainfall: +formValues.rainfall,
+      rainfall: adjustedRainfall,
     });
     setResult(localResult);
     if (user) await saveHistory(user.uid, "crop", formValues, localResult);
   };
+
+  // Estimate annual rainfall from humidity and temperature when current rainfall is 0
+  function estimateAnnualRainfall(humidity, temperature) {
+    if (humidity > 75) return 180; // high humidity = high rainfall region
+    if (humidity > 60) return 120;
+    if (humidity > 45) return 80;
+    if (temperature > 35) return 50; // hot + dry = arid
+    return 100;
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16">
