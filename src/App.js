@@ -6,7 +6,6 @@ import { auth } from "./firebase";
 import Header from "./header";
 import Footer from "./footer";
 import Landing from "./landing";
-import ContactModal from "./ContactModal";
 import CropPage from "./pages/CropPage";
 import FertilizerPage from "./pages/FertilizerPage";
 import DiseasePage from "./pages/DiseasePage";
@@ -25,7 +24,7 @@ import ChatBot from "./components/ChatBot";
 export const DarkModeContext = React.createContext();
 
 // Public landing page — visible to everyone
-function PublicHome({ darkMode, onContactClick, user }) {
+function PublicHome({ darkMode, user }) {
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -119,14 +118,13 @@ function PublicHome({ darkMode, onContactClick, user }) {
         </div>
       </header>
 
-      <Landing darkMode={darkMode} onContactClick={onContactClick} />
+      <Landing darkMode={darkMode} />
       <Footer darkMode={darkMode} />
     </>
   );
 }
 
 function App() {
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -166,9 +164,7 @@ function App() {
         <div className={`flex min-h-screen flex-col leaf-bg ${darkMode ? "dark" : ""}`}>
           <Routes>
             {/* Public landing page */}
-            <Route path="/" element={
-              <PublicHome darkMode={darkMode} onContactClick={() => setIsContactModalOpen(true)} user={user} />
-            } />
+            <Route path="/" element={<PublicHome darkMode={darkMode} user={user} />} />
 
             {/* Auth pages */}
             <Route path="/signin" element={<SignIn darkMode={darkMode} />} />
@@ -177,8 +173,7 @@ function App() {
             {/* Protected pages — all wrapped with header/footer */}
             <Route path="/*" element={
               <Protected>
-                <Header onContactClick={() => setIsContactModalOpen(true)} darkMode={darkMode}
-                  setDarkMode={setDarkMode} user={user} onSignOut={handleSignOut} />
+                <Header darkMode={darkMode} setDarkMode={setDarkMode} user={user} onSignOut={handleSignOut} />
                 <main className="flex-1">
                   <Routes>
                     <Route path="/dashboard" element={<Dashboard darkMode={darkMode} user={user} />} />
@@ -194,7 +189,6 @@ function App() {
                   </Routes>
                 </main>
                 <Footer darkMode={darkMode} />
-                <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} darkMode={darkMode} />
                 <ChatBot darkMode={darkMode} />
               </Protected>
             } />

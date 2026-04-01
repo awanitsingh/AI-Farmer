@@ -47,7 +47,7 @@ function DropdownMenu({ items, darkMode, navigate, onClose }) {
   );
 }
 
-function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
+function Header({ darkMode, setDarkMode, user, onSignOut }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -157,8 +157,7 @@ function Header({ onContactClick, darkMode, setDarkMode, user, onSignOut }) {
               }`}
             >
               <span>✉️</span> Contact
-            </button>
-          </nav>
+            </button>          </nav>
 
           {/* Right — User avatar with dropdown */}
           <div className="flex items-center gap-2">
