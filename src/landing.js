@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import AnimatedBg from "./components/AnimatedBg";
 
 const CROPS = ["Rice", "Wheat", "Maize", "Cotton", "Mango", "Sugarcane"];
 
@@ -54,9 +55,10 @@ export default function Landing({ darkMode }) {
 
   return (
     <div className={bg}>
+      <AnimatedBg darkMode={darkMode} />
 
       {/* HERO */}
-      <section className={`relative overflow-hidden ${bg} min-h-screen flex items-center`}>
+      <section className={`relative z-10 overflow-hidden ${bg} min-h-screen flex items-center`}>
         <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-gradient-to-bl from-green-100 to-transparent rounded-full -translate-y-1/3 translate-x-1/4 opacity-50 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-emerald-100 to-transparent rounded-full translate-y-1/2 -translate-x-1/4 opacity-30 pointer-events-none" />
         {darkMode && <div className="absolute inset-0 bg-gradient-to-br from-green-950/20 to-transparent pointer-events-none" />}
