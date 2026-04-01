@@ -25,12 +25,17 @@ async function fetchWeatherAndSoil(latitude, longitude) {
   const c = data.current;
   const soil = estimateSoilValues(latitude, longitude);
 
-  // Fetch annual rainfall using climate normals (lightweight)
+  // Fetch current month's rainfall
   let annualRainfall = 100;
   try {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const startDate = `${year}-${month}-01`;
+    const endDate = `${year}-${month}-${String(now.getDate()).padStart(2, "0")}`;
     const rainRes = await fetch(
-      `https://api.open-meteo.com/v1/climate?latitude=${latitude}&longitude=${longitude}` +
-      `&daily=precipitation_sum&start_date=2023-01-01&end_date=2023-12-31`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}` +
+      `&daily=precipitation_sum&start_date=${startDate}&end_date=${endDate}&timezone=auto`
     );
     const rainData = await rainRes.json();
     if (rainData.daily?.precipitation_sum) {
