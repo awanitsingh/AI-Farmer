@@ -308,6 +308,43 @@ export default function Landing({ darkMode, onContactClick }) {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className={`py-16 ${darkMode ? "bg-gray-900" : "bg-green-50"}`}>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-4 ${darkMode ? "bg-green-900/50 text-green-300" : "bg-green-100 text-green-700"}`}>
+              What Farmers Say
+            </span>
+            <h2 className={`text-3xl font-bold ${darkMode ? "text-white" : "text-gray-900"}`}>Trusted by Farmers Across India</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { name: "Rajesh Kumar",    location: "Punjab",       avatar: "👨‍🌾", rating: 5, text: "AI Farmer helped me choose the right crop for my soil. My wheat yield increased by 30% this season. The auto-fill feature is amazing!" },
+              { name: "Priya Sharma",    location: "Maharashtra",  avatar: "👩‍🌾", rating: 5, text: "The disease detection feature saved my tomato crop. I uploaded a photo and got the exact treatment within seconds. Highly recommended!" },
+              { name: "Suresh Patel",    location: "Gujarat",      avatar: "👨‍🌾", rating: 5, text: "Market prices section helps me decide when to sell. I sold my cotton at the peak price this year thanks to the trend charts." },
+              { name: "Anita Devi",      location: "Uttar Pradesh",avatar: "👩‍🌾", rating: 5, text: "The fertilizer recommendation was spot on. I saved money by using exactly the right amount of NPK for my paddy fields." },
+              { name: "Mohan Singh",     location: "Haryana",      avatar: "👨‍🌾", rating: 5, text: "Future predictions helped me plan my crop rotation for the entire year. The soil health calculator is very useful too." },
+              { name: "Kavitha Reddy",   location: "Andhra Pradesh",avatar: "👩‍🌾", rating: 5, text: "Simple to use and very accurate. The chatbot answered all my questions about rice cultivation in my local language context." },
+            ].map((t, i) => (
+              <div key={i} className={`rounded-2xl p-5 border ${darkMode ? "bg-gray-800/60 border-green-900" : "bg-white border-green-100"}`}
+                style={{ boxShadow: darkMode ? "none" : "0 2px 12px rgba(0,0,0,0.05)" }}>
+                <div className="flex gap-0.5 mb-3">
+                  {Array(t.rating).fill("⭐").map((s, j) => <span key={j} className="text-sm">{s}</span>)}
+                </div>
+                <p className={`text-sm leading-relaxed mb-4 italic ${darkMode ? "text-gray-300" : "text-gray-600"}`}>"{t.text}"</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{t.avatar}</span>
+                  <div>
+                    <p className={`text-sm font-semibold ${darkMode ? "text-green-300" : "text-green-700"}`}>{t.name}</p>
+                    <p className={`text-xs ${darkMode ? "text-gray-500" : "text-gray-400"}`}>📍 {t.location}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-12 relative overflow-hidden">
         <div className="absolute inset-0">

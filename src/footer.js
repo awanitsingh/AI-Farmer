@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 function Footer({ onContactClick, darkMode }) {
   const links = [
-    { label: "Home",               href: "/" },
-    { label: "Dashboard",          href: "/dashboard" },
     { label: "Crop Recommendation",href: "/crop" },
     { label: "Fertilizer",         href: "/fertilizer" },
     { label: "Disease Detection",  href: "/disease" },
@@ -13,6 +11,11 @@ function Footer({ onContactClick, darkMode }) {
   ];
 
   const navigate = useNavigate();
+
+  const handleNav = (href) => {
+    navigate(href);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const socials = [
     { icon: "🐙", label: "GitHub", href: "https://github.com/awanitsingh" },
@@ -68,7 +71,7 @@ function Footer({ onContactClick, darkMode }) {
               {links.map((l, i) => (
                 <li key={i}>
                   <button
-                    onClick={() => navigate(l.href)}
+                    onClick={() => handleNav(l.href)}
                     className="flex items-center gap-2 text-green-200/70 hover:text-green-300 text-sm transition-colors group bg-transparent border-none cursor-pointer p-0"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
