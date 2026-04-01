@@ -140,7 +140,7 @@ export default function Landing({ darkMode }) {
       </section>
 
       {/* How it works */}
-      <section className={`py-24 relative overflow-hidden ${darkMode ? "bg-gray-950" : "bg-white"}`}>
+      <section className={`py-12 relative overflow-hidden ${darkMode ? "bg-gray-950" : "bg-white"}`}>
         <div className="absolute inset-0 pointer-events-none">
           <div className={`absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-10 ${darkMode ? "bg-green-500" : "bg-green-300"}`} />
         </div>
@@ -172,7 +172,7 @@ export default function Landing({ darkMode }) {
       </section>
 
       {/* CTA */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-12 relative overflow-hidden">
         <div className="absolute inset-0">
           <img src="https://images.pexels.com/photos/2132250/pexels-photo-2132250.jpeg?w=1600" alt="Farm" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-br from-green-900/95 to-emerald-900/90" />
