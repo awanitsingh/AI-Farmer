@@ -120,7 +120,7 @@ function PublicHome({ darkMode, onContactClick, user }) {
       </header>
 
       <Landing darkMode={darkMode} onContactClick={onContactClick} />
-      <Footer onContactClick={onContactClick} darkMode={darkMode} />
+      <Footer darkMode={darkMode} />
     </>
   );
 }
@@ -193,7 +193,7 @@ function App() {
                     <Route path="/future"     element={<FuturePredictions darkMode={darkMode} />} />
                   </Routes>
                 </main>
-                <Footer onContactClick={() => setIsContactModalOpen(true)} darkMode={darkMode} />
+                <Footer darkMode={darkMode} />
                 <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} darkMode={darkMode} />
                 <ChatBot darkMode={darkMode} />
               </Protected>
