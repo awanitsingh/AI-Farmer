@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { saveHistory } from "./utils/saveHistory";
 import { predictFertilizer } from "./utils/fertilizerPredictor";
-import { autoFillFromLocation } from "./utils/autoFill";
+import { autoFillFromLocation, autoFillFromCityName } from "./utils/autoFill";
 
 const soilTypes = ["Loamy", "Sandy", "Clayey", "Black", "Red"];
 const cropTypes = ["Sugarcane", "Cotton", "Millets", "Paddy", "Pulses", "Wheat", "Tobacco", "Barley", "Oil seeds", "Ground Nuts", "Maize"];
@@ -24,29 +24,31 @@ function FertForm({ onSubmit, darkMode }) {
   const [loading, setLoading]         = useState(false);
   const [autoLoading, setAutoLoading] = useState(false);
   const [autoMsg, setAutoMsg]         = useState("");
+  const [manualCity, setManualCity]   = useState("");
+  const [showManual, setShowManual]   = useState(false);
 
   const handleChange = (e) => setFormValues({ ...formValues, [e.target.name]: e.target.value });
 
   const handleAutoFill = async () => {
-    setAutoLoading(true);
-    setAutoMsg("");
+    setAutoLoading(true); setAutoMsg("");
     try {
       const data = await autoFillFromLocation();
-      setFormValues(prev => ({
-        ...prev,
-        Temparature:  data.temperature,
-        Humidity:     data.humidity,
-        Moisture:     data.moisture,
-        Nitrogen:     data.N,
-        Potassium:    data.K,
-        Phosphorous:  data.P,
-      }));
+      setFormValues(prev => ({ ...prev, Temparature: data.temperature, Humidity: data.humidity, Moisture: data.moisture, Nitrogen: data.N, Potassium: data.K, Phosphorous: data.P }));
       setAutoMsg(`✅ Auto-filled from ${data.city || "your location"}!`);
-    } catch {
-      setAutoMsg("⚠️ Could not detect location. Please allow location access.");
-    } finally {
-      setAutoLoading(false);
-    }
+    } catch { setAutoMsg("⚠️ Could not detect location. Please allow location access."); }
+    finally { setAutoLoading(false); }
+  };
+
+  const handleManualCity = async () => {
+    if (!manualCity.trim()) return;
+    setAutoLoading(true); setAutoMsg("");
+    try {
+      const data = await autoFillFromCityName(manualCity);
+      setFormValues(prev => ({ ...prev, Temparature: data.temperature, Humidity: data.humidity, Moisture: data.moisture, Nitrogen: data.N, Potassium: data.K, Phosphorous: data.P }));
+      setAutoMsg(`✅ Auto-filled from ${data.city || manualCity}!`);
+      setShowManual(false);
+    } catch { setAutoMsg("⚠️ Location not found. Try a different city name."); }
+    finally { setAutoLoading(false); }
   };
 
   const handleSubmit = async (e) => {
@@ -60,33 +62,39 @@ function FertForm({ onSubmit, darkMode }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Auto-fill button */}
-      <div className="flex items-center justify-between mb-4">
-        <p className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-          {autoMsg.startsWith("✅") ? (
-            <span className={darkMode ? "text-green-400" : "text-green-600"}>
-              📍 {autoMsg.replace("✅ Auto-filled from ", "").replace("!", "")}
-            </span>
-          ) : "Enter values manually or auto-fill from your location"}
-        </p>
-        <button
-          type="button"
-          onClick={handleAutoFill}
-          disabled={autoLoading}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
-            darkMode ? "bg-green-900/50 text-green-300 hover:bg-green-900" : "bg-green-100 text-green-700 hover:bg-green-200"
-          } disabled:opacity-50`}
-        >
-          {autoLoading ? "📍 Detecting..." : "📍 Auto-fill from Location"}
-        </button>
+      {/* Location bar */}
+      <div className={`flex flex-col gap-2 mb-4 p-3 rounded-xl border ${darkMode ? "bg-gray-700/30 border-green-900" : "bg-green-50 border-green-100"}`}>
+        <div className="flex items-center justify-between">
+          <p className={`text-xs font-medium ${darkMode ? "text-green-400" : "text-green-700"}`}>
+            {autoMsg.startsWith("✅") ? `📍 ${autoMsg.replace("✅ Auto-filled from ", "").replace("!", "")}` : "📍 Fill from location"}
+          </p>
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setShowManual(!showManual)}
+              className={`text-xs px-3 py-1 rounded-lg border transition-all ${darkMode ? "border-green-800 text-green-400 hover:bg-green-900/40" : "border-green-200 text-green-700 hover:bg-green-100"}`}>
+              ✏️ Enter City
+            </button>
+            <button type="button" onClick={handleAutoFill} disabled={autoLoading}
+              className={`text-xs px-3 py-1 rounded-lg transition-all ${darkMode ? "bg-green-900/50 text-green-300 hover:bg-green-900" : "bg-green-500 text-white hover:bg-green-600"} disabled:opacity-50`}>
+              {autoLoading ? "⏳" : "📍 Auto-detect"}
+            </button>
+          </div>
+        </div>
+        {showManual && (
+          <div className="flex gap-2">
+            <input type="text" value={manualCity} onChange={(e) => setManualCity(e.target.value)}
+              placeholder="e.g. Phagwara, Punjab"
+              onKeyDown={(e) => e.key === "Enter" && handleManualCity()}
+              className="eco-input flex-1 text-sm py-1.5" />
+            <button type="button" onClick={handleManualCity} disabled={autoLoading}
+              className="btn-eco text-xs px-4 py-1.5 disabled:opacity-50">
+              {autoLoading ? "..." : "Fill"}
+            </button>
+          </div>
+        )}
+        {autoMsg && !autoMsg.startsWith("✅") && (
+          <p className={`text-xs ${darkMode ? "text-yellow-400" : "text-yellow-600"}`}>{autoMsg}</p>
+        )}
       </div>
-
-      {autoMsg && (
-        <div className={`mb-4 p-2 rounded-xl text-xs text-center ${
-          autoMsg.startsWith("✅") ? (darkMode ? "bg-green-900/40 text-green-300" : "bg-green-50 text-green-700")
-            : (darkMode ? "bg-yellow-900/40 text-yellow-300" : "bg-yellow-50 text-yellow-700")
-        }`}>{autoMsg}</div>
-      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {numFields.map((f) => (
