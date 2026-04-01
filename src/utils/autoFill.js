@@ -16,20 +16,29 @@ function estimateSoilValues(lat, lon) {
 }
 
 async function fetchWeatherAndSoil(latitude, longitude) {
-  // Fetch current weather + annual rainfall sum
+  // Fetch current weather
   const res = await fetch(
     `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}` +
-    `&current=temperature_2m,relative_humidity_2m` +
-    `&daily=precipitation_sum&past_days=365&forecast_days=1&timezone=auto`
+    `&current=temperature_2m,relative_humidity_2m&timezone=auto`
   );
   const data = await res.json();
   const c = data.current;
   const soil = estimateSoilValues(latitude, longitude);
 
-  // Sum last 365 days of daily precipitation for annual rainfall
-  const annualRainfall = data.daily?.precipitation_sum
-    ? Math.round(data.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0))
-    : 100;
+  // Fetch annual rainfall using climate normals (lightweight)
+  let annualRainfall = 100;
+  try {
+    const rainRes = await fetch(
+      `https://api.open-meteo.com/v1/climate?latitude=${latitude}&longitude=${longitude}` +
+      `&daily=precipitation_sum&start_date=2023-01-01&end_date=2023-12-31`
+    );
+    const rainData = await rainRes.json();
+    if (rainData.daily?.precipitation_sum) {
+      annualRainfall = Math.round(
+        rainData.daily.precipitation_sum.reduce((a, b) => a + (b || 0), 0)
+      );
+    }
+  } catch { /* use default */ }
 
   // Reverse geocode for city name
   let city = "";
@@ -61,8 +70,11 @@ export async function autoFillFromLocation() {
         try { resolve(await fetchWeatherAndSoil(coords.latitude, coords.longitude)); }
         catch (e) { reject(e); }
       },
-      (err) => reject(err),
-      { timeout: 8000 }
+      (err) => {
+        console.error("Geolocation error:", err.code, err.message);
+        reject(err);
+      },
+      { timeout: 15000, enableHighAccuracy: false, maximumAge: 60000 }
     );
   });
 }
