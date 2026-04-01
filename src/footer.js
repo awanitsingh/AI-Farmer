@@ -7,6 +7,8 @@ function Footer({ darkMode }) {
     { label: "Disease Detection",   href: "/disease" },
     { label: "Market Prices",       href: "/market" },
     { label: "Future Predictions",  href: "/future" },
+    { label: "Soil Health",         href: "/soil" },
+    { label: "Crop Calendar",       href: "/calendar" },
     { label: "History",             href: "/history" },
   ];
 
@@ -24,7 +26,7 @@ function Footer({ darkMode }) {
   ];
 
   return (
-    <footer className={`${darkMode ? "bg-gray-950 border-t border-green-900" : "bg-gradient-to-br from-green-900 via-emerald-900 to-green-950"} text-white`}>
+    <footer id="footer" className={`${darkMode ? "bg-gray-950 border-t border-green-900" : "bg-gradient-to-br from-green-900 via-emerald-900 to-green-950"} text-white`}>
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
 

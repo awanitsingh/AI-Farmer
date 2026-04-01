@@ -24,6 +24,7 @@ const navItems = [
   },
   { label: "History", path: "/history", icon: "📊" },
   { label: "Market",  path: "/market",  icon: "📈" },
+  { label: "Contact", path: "#footer",  icon: "✉️", isAnchor: true },
 ];
 
 function DropdownMenu({ items, darkMode, navigate, onClose }) {
@@ -137,7 +138,14 @@ function Header({ darkMode, setDarkMode, user, onSignOut }) {
                   </>
                 ) : (
                   <button
-                    onClick={() => { navigate(item.path); closeAll(); }}
+                    onClick={() => {
+                      if (item.isAnchor) {
+                        document.getElementById("footer")?.scrollIntoView({ behavior: "smooth" });
+                        closeAll();
+                      } else {
+                        navigate(item.path); closeAll();
+                      }
+                    }}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                       isActive(item.path)
                         ? darkMode ? "bg-green-900/50 text-green-300" : "bg-green-100 text-green-700"

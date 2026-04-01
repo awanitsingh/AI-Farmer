@@ -50,6 +50,7 @@ function PublicHome({ darkMode, user }) {
                 { label: "Features",     href: "#features" },
                 { label: "How it Works", href: "#how"      },
                 { label: "Help",         href: "#help"     },
+                { label: "Contact",      href: "#footer"   },
               ].map((l, i) => (
                 <a key={i} href={l.href}
                   className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors no-underline ${
@@ -97,6 +98,7 @@ function PublicHome({ darkMode, user }) {
                 { label: "Features",     href: "#features" },
                 { label: "How it Works", href: "#how"      },
                 { label: "Help",         href: "#help"     },
+                { label: "Contact",      href: "#footer"   },
               ].map((l, i) => (
                 <a key={i} href={l.href} onClick={() => setMobileOpen(false)}
                   className={`block px-3 py-2 text-sm rounded-xl no-underline ${
