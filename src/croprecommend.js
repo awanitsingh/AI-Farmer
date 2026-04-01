@@ -150,14 +150,14 @@ function CropResult({ result, onBack, darkMode }) {
   const cropName = result?.split(" ")[0] || "farm";
 
   const cropImages = {
-    rice:        "https://images.pexels.com/photos/1537169/pexels-photo-1537169.jpeg?w=400",
+    rice:        "https://images.pexels.com/photos/2589457/pexels-photo-2589457.jpeg?w=400",
     maize:       "https://images.pexels.com/photos/547263/pexels-photo-547263.jpeg?w=400",
-    chickpea:    "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    chickpea:    "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
     kidneybeans: "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
-    pigeonpeas:  "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
-    mothbeans:   "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
-    mungbean:    "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
-    blackgram:   "https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?w=400",
+    pigeonpeas:  "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
+    mothbeans:   "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
+    mungbean:    "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
+    blackgram:   "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
     lentil:      "https://images.pexels.com/photos/6157049/pexels-photo-6157049.jpeg?w=400",
     pomegranate: "https://images.pexels.com/photos/1435735/pexels-photo-1435735.jpeg?w=400",
     banana:      "https://images.pexels.com/photos/1093038/pexels-photo-1093038.jpeg?w=400",
@@ -172,6 +172,8 @@ function CropResult({ result, onBack, darkMode }) {
     cotton:      "https://images.pexels.com/photos/5029859/pexels-photo-5029859.jpeg?w=400",
     jute:        "https://images.pexels.com/photos/974314/pexels-photo-974314.jpeg?w=400",
     coffee:      "https://images.pexels.com/photos/894695/pexels-photo-894695.jpeg?w=400",
+    wheat:       "https://images.pexels.com/photos/326082/pexels-photo-326082.jpeg?w=400",
+    sugarcane:   "https://images.pexels.com/photos/5029859/pexels-photo-5029859.jpeg?w=400",
   };
 
   const key = cropName.toLowerCase().replace(/\s/g, "");
@@ -206,7 +208,7 @@ function Croprecommend({ darkMode, user }) {
   const handleSubmit = async (formValues) => {
     try {
       // Try the ML API first (accurate)
-      const res = await fetch("https://your-new-crop-api.onrender.com/predict", {
+      const res = await fetch("https://ai-farmer-crop-api.onrender.com/predict", {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(formValues),
