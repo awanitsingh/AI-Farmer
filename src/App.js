@@ -61,48 +61,6 @@ function PublicHome({ darkMode, onContactClick, user }) {
       <section id="about" className={darkMode ? "bg-gray-900" : "bg-green-50"}>
         <Des darkMode={darkMode} />
       </section>
-      <section id="features" className={darkMode ? "bg-gray-950" : "bg-white"}>
-        {/* Feature cards with lock overlay for non-logged-in users */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-14">
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-4 ${
-              darkMode ? "bg-green-900/50 text-green-300" : "bg-green-100 text-green-700"
-            }`}>🤖 Powered by Machine Learning</div>
-            <h2 className="section-title mb-3">Our AI Features</h2>
-            <p className={`max-w-xl mx-auto text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
-              Sign in to unlock all features and start making smarter farming decisions.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: "🌾", tag: "AI Model 1", title: "Crop Recommendation", desc: "Get the best crop for your soil and climate using ML predictions." },
-              { icon: "💧", tag: "AI Model 2", title: "Fertilizer Recommendation", desc: "Precise fertilizer suggestions based on soil type and nutrients." },
-              { icon: "🔬", tag: "AI Model 3", title: "Disease Detection", desc: "Upload a plant photo to detect diseases and get treatment advice." },
-              { icon: "📈", tag: "Market", title: "Market Prices", desc: "Live indicative crop prices with trend charts." },
-              { icon: "🔮", tag: "Predictions", title: "Future Predictions", desc: "AI forecasts for yield, price, soil health and planting time." },
-              { icon: "🌤️", tag: "Weather", title: "Weather & Dashboard", desc: "Real-time weather, history, soil health calculator and more." },
-            ].map((f, i) => (
-              <div key={i} onClick={() => navigate("/signup")}
-                className={`relative rounded-2xl border p-6 cursor-pointer transition-all hover:-translate-y-1 hover:shadow-lg group ${
-                  darkMode ? "bg-gray-800/60 border-green-900" : "bg-green-50 border-green-100"
-                }`}>
-                <div className="absolute top-3 right-3 text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700">🔒 Login</div>
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4 ${
-                  darkMode ? "bg-green-900/50" : "bg-white shadow-sm"
-                }`}>{f.icon}</div>
-                <span className={`text-xs font-semibold ${darkMode ? "text-green-400" : "text-green-600"}`}>{f.tag}</span>
-                <h3 className={`text-lg font-bold mt-1 mb-2 ${darkMode ? "text-green-200" : "text-gray-800"}`}>{f.title}</h3>
-                <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>{f.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <button onClick={() => navigate("/signup")} className="btn-eco px-8 py-3 text-base">
-              🌿 Get Started Free
-            </button>
-          </div>
-        </div>
-      </section>
       <Footer onContactClick={onContactClick} darkMode={darkMode} />
     </>
   );
