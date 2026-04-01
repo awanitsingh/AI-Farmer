@@ -8,7 +8,6 @@ import Footer from "./footer";
 import Landing from "./landing";
 import Des from "./des";
 import ContactModal from "./ContactModal";
-import Features from "./Features";
 import CropPage from "./pages/CropPage";
 import FertilizerPage from "./pages/FertilizerPage";
 import DiseasePage from "./pages/DiseasePage";
