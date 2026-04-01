@@ -190,17 +190,6 @@ export default function Landing({ darkMode }) {
         </div>
       </section>
 
-      {/* ── PHOTO STRIP ──────────────────────────────────────────────────── */}
-      <section className="py-6 overflow-hidden">
-        <div className="flex gap-4 px-6">
-          {FARM_IMGS.map((img, i) => (
-            <div key={i} className="flex-1 min-w-0 rounded-3xl overflow-hidden" style={{ height: "220px" }}>
-              <img src={img} alt="farm" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section className={`py-28 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
         <div className="max-w-5xl mx-auto px-6">
