@@ -108,7 +108,7 @@ export default function Landing({ darkMode }) {
       </section>
 
       {/* Features */}
-      <section className={`py-24 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
+      <section id="features" className={`py-24 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className={`inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-4 ${darkMode ? "bg-green-900/50 text-green-300" : "bg-green-100 text-green-700"}`}>
@@ -140,7 +140,7 @@ export default function Landing({ darkMode }) {
       </section>
 
       {/* How it works */}
-      <section className={`py-12 relative overflow-hidden ${darkMode ? "bg-gray-950" : "bg-white"}`}>
+      <section id="how" className={`py-12 relative overflow-hidden ${darkMode ? "bg-gray-950" : "bg-white"}`}>
         <div className="absolute inset-0 pointer-events-none">
           <div className={`absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-10 ${darkMode ? "bg-green-500" : "bg-green-300"}`} />
         </div>

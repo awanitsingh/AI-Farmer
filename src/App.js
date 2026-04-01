@@ -27,33 +27,104 @@ export const DarkModeContext = React.createContext();
 // Public landing page — visible to everyone
 function PublicHome({ darkMode, onContactClick, user }) {
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
   return (
     <>
-      {/* Public header with Sign In button */}
-      <header className={`sticky top-0 z-50 py-4 backdrop-blur-md border-b ${
+      {/* Public header */}
+      <header className={`sticky top-0 z-50 backdrop-blur-md border-b ${
         darkMode ? "bg-gray-900/95 border-green-900" : "bg-white/95 border-green-100"
       }`}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-10">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-base shadow-md">🌿</div>
-            <span className={`text-base font-bold tracking-tight ${darkMode ? "text-green-400" : "text-green-700"}`}>AI Farmer</span>
-          </div>
-          <div className="flex items-center gap-3">
-            {user ? (
-              <button onClick={() => navigate("/dashboard")} className="btn-eco text-xs px-4 py-2">
-                Go to Dashboard →
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-base shadow-md">🌿</div>
+              <span className={`text-base font-bold tracking-tight ${darkMode ? "text-green-400" : "text-green-700"}`}>AI Farmer</span>
+            </div>
+
+            {/* Desktop nav */}
+            <nav className="hidden md:flex items-center gap-1">
+              {[
+                { label: "Home",     href: "#"          },
+                { label: "About",    href: "#about"     },
+                { label: "Features", href: "#features"  },
+                { label: "How it Works", href: "#how"   },
+              ].map((l, i) => (
+                <a key={i} href={l.href}
+                  className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors no-underline ${
+                    darkMode ? "text-gray-300 hover:bg-gray-800 hover:text-green-300" : "text-gray-600 hover:bg-green-50 hover:text-green-700"
+                  }`}>
+                  {l.label}
+                </a>
+              ))}
+              <button onClick={onContactClick}
+                className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors bg-transparent border-none cursor-pointer ${
+                  darkMode ? "text-gray-300 hover:bg-gray-800 hover:text-green-300" : "text-gray-600 hover:bg-green-50 hover:text-green-700"
+                }`}>
+                Contact
               </button>
-            ) : (
-              <>
-                <button onClick={() => navigate("/signin")} className={`text-sm font-medium ${darkMode ? "text-green-400" : "text-green-700"}`}>
+            </nav>
+
+            {/* CTA buttons */}
+            <div className="flex items-center gap-3">
+              {user ? (
+                <button onClick={() => navigate("/dashboard")} className="btn-eco text-sm px-4 py-2">
+                  Dashboard →
+                </button>
+              ) : (
+                <>
+                  <button onClick={() => navigate("/signin")}
+                    className={`hidden sm:block text-sm font-medium px-3 py-2 rounded-xl transition-colors ${
+                      darkMode ? "text-green-400 hover:bg-gray-800" : "text-green-700 hover:bg-green-50"
+                    }`}>
+                    Sign In
+                  </button>
+                  <button onClick={() => navigate("/signup")} className="btn-eco text-sm px-4 py-2">
+                    Get Started →
+                  </button>
+                </>
+              )}
+              {/* Mobile menu button */}
+              <button onClick={() => setMobileOpen(!mobileOpen)}
+                className={`md:hidden p-2 rounded-xl ${darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-600 hover:bg-green-50"}`}>
+                {mobileOpen ? "✕" : "☰"}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile menu */}
+          {mobileOpen && (
+            <div className={`md:hidden border-t py-3 ${darkMode ? "border-green-900" : "border-green-100"}`}>
+              {[
+                { label: "Home",         href: "#"         },
+                { label: "About",        href: "#about"    },
+                { label: "Features",     href: "#features" },
+                { label: "How it Works", href: "#how"      },
+              ].map((l, i) => (
+                <a key={i} href={l.href} onClick={() => setMobileOpen(false)}
+                  className={`block px-3 py-2 text-sm rounded-xl no-underline ${
+                    darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-600 hover:bg-green-50"
+                  }`}>
+                  {l.label}
+                </a>
+              ))}
+              <button onClick={() => { onContactClick(); setMobileOpen(false); }}
+                className={`w-full text-left px-3 py-2 text-sm bg-transparent border-none cursor-pointer rounded-xl ${
+                  darkMode ? "text-gray-300 hover:bg-gray-700" : "text-gray-600 hover:bg-green-50"
+                }`}>
+                Contact
+              </button>
+              {!user && (
+                <button onClick={() => navigate("/signin")}
+                  className={`w-full text-left px-3 py-2 text-sm bg-transparent border-none cursor-pointer rounded-xl ${
+                    darkMode ? "text-green-400 hover:bg-gray-700" : "text-green-700 hover:bg-green-50"
+                  }`}>
                   Sign In
                 </button>
-                <button onClick={() => navigate("/signup")} className="btn-eco text-xs px-4 py-2">
-                  Get Started →
-                </button>
-              </>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
