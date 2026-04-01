@@ -1,10 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
 function Footer({ onContactClick, darkMode }) {
   const links = [
-    { label: "About", href: "#about" },
-    { label: "Crop Recommendation", href: "#croprecommender" },
-    { label: "Fertilizer", href: "#fertilizer" },
-    { label: "Disease Detection", href: "#plantdisease" },
+    { label: "Home",               href: "/" },
+    { label: "Dashboard",          href: "/dashboard" },
+    { label: "Crop Recommendation",href: "/crop" },
+    { label: "Fertilizer",         href: "/fertilizer" },
+    { label: "Disease Detection",  href: "/disease" },
+    { label: "Market Prices",      href: "/market" },
+    { label: "Future Predictions", href: "/future" },
+    { label: "History",            href: "/history" },
   ];
+
+  const navigate = useNavigate();
 
   const socials = [
     { icon: "🐙", label: "GitHub", href: "https://github.com/awanitsingh" },
@@ -59,13 +67,13 @@ function Footer({ onContactClick, darkMode }) {
             <ul className="space-y-3">
               {links.map((l, i) => (
                 <li key={i}>
-                  <a
-                    href={l.href}
-                    className="flex items-center gap-2 text-green-200/70 hover:text-green-300 text-sm transition-colors group"
+                  <button
+                    onClick={() => navigate(l.href)}
+                    className="flex items-center gap-2 text-green-200/70 hover:text-green-300 text-sm transition-colors group bg-transparent border-none cursor-pointer p-0"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     {l.label}
-                  </a>
+                  </button>
                 </li>
               ))}
               <li>
