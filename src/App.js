@@ -6,7 +6,6 @@ import { auth } from "./firebase";
 import Header from "./header";
 import Footer from "./footer";
 import Landing from "./landing";
-import Des from "./des";
 import ContactModal from "./ContactModal";
 import CropPage from "./pages/CropPage";
 import FertilizerPage from "./pages/FertilizerPage";
@@ -59,9 +58,6 @@ function PublicHome({ darkMode, onContactClick, user }) {
       </header>
 
       <Landing darkMode={darkMode} />
-      <section id="about" className={darkMode ? "bg-gray-900" : "bg-green-50"}>
-        <Des darkMode={darkMode} />
-      </section>
       <Footer onContactClick={onContactClick} darkMode={darkMode} />
     </>
   );
