@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const GEMINI_KEY = process.env.REACT_APP_GEMINI_API_KEY || "AIzaSyBcjeMPLmK8zA8iuGNj1C2toTVytV-IS7M";
+const GEMINI_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 const SYSTEM_PROMPT = `You are an expert AI farming assistant for the "AI Farmer" platform.
 Help farmers with crop recommendations, fertilizer advice, plant disease identification,
